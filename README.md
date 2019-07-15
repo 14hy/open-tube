@@ -92,3 +92,7 @@ npm run production
 ## main-bundle.js 생성 후, server에서 구동
 ## (이후, 파이어베이스에서 사용할 예정)
 ```
+
+## 기타
+
+다른 세부사항은 `WIKI` 및 `Projects` 패널 참조
