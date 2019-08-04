@@ -5,9 +5,15 @@ from datetime import datetime
 import time
 import re
 options = webdriver.ChromeOptions()
-options.add_argument('--disable-gpu')
-options.add_argument('headless")
-driver = webdriver.Chrome('C:/chromedriver_win32/chromedriver.exe',chrome_options=options)
+options.add_argument("start-maximized"); # open Browser in maximized mode
+options.add_argument('--window-size=1920,1080')
+options.add_argument("--headless"); # open Browser in maximized mode
+options.add_argument("disable-infobars"); # disabling infobars
+options.add_argument("--disable-extensions"); # disabling extensions
+options.add_argument("--disable-gpu"); # applicable to windows os only
+options.add_argument("--disable-dev-shm-usage");# overcome limited resource problems
+options.add_argument("--no-sandbox"); # Bypass OS security model
+driver = webdriver.Chrome('/usr/local/bin/chromedriver',chrome_options=options)
 
 def getCmt():
     
@@ -69,12 +75,15 @@ def getCmt():
         last_t = re.sub('[^\d]','',last)
         last_t = int(last_t)
         plus_c = 0
-        plus_cmt = body2.find_all('yt-formatted-string',attrs={'id':'text'})
+        plus_cmt = body2.find_all('yt-formatted-string',attrs={'id':'text', 'class':'style-scope ytd-button-renderer'})
         for count in plus_cmt:
             count = count.get_text().strip()
-            #print(count)
+            if ("답글" not in count):
+                continue
             if count == '답글 보기':
                 plus_c += 1
+            elif count == "답글 숨기기":
+                continue
             else:
                 cmts = re.sub('[^\d]','',count)
                 plus_c += int(cmts)
@@ -103,7 +112,7 @@ def getCmt():
             #cmtlist.append([textcmt, div2])
         num_c = (len(cmtlist) +plus_c )
         print(num_c)
-        if num_c >= (last_t-10) or num_c>=3500:
+        if num_c >= (last_t-15) or num_c>=3500:
             break
     print(len(cmtlist))        
     print('-'*50)
