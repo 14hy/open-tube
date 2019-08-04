@@ -5,8 +5,8 @@ from datetime import datetime
 import time
 import re
 options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
+options.add_argument('--disable-gpu')
+options.add_argument('headless")
 driver = webdriver.Chrome('C:/chromedriver_win32/chromedriver.exe',chrome_options=options)
 
 def getCmt():
@@ -37,7 +37,7 @@ def getCmt():
             pass
     
     #10번만 반복 (스크롤 횟수 설정 필요)
-    num_of_pagedowns = 30
+    num_of_pagedowns = 90
     while True:
     
         body.send_keys(Keys.PAGE_DOWN)
@@ -61,14 +61,15 @@ def getCmt():
         #print(title1)
     
         thread=body2.find_all('ytd-comment-renderer', attrs={'class':'style-scope ytd-comment-thread-renderer'})
-    
+        # button = body2.find_all("paper-button",attrs={'class':'style-scope ytd-comment-thread-renderer'})
+        # button.click()
         last = body2.find('yt-formatted-string', attrs={'class':'count-text style-scope ytd-comments-header-renderer'})
         last = last.string
         # print(last)
         last_t = re.sub('[^\d]','',last)
         last_t = int(last_t)
         plus_c = 0
-        plus_cmt = body2.find_all('span',attrs={'id':'more-text'})
+        plus_cmt = body2.find_all('yt-formatted-string',attrs={'id':'text'})
         for count in plus_cmt:
             count = count.get_text().strip()
             #print(count)
