@@ -1,2 +1,6 @@
-./server/tensorflow/src/.ipynb_checkpoints/
+.ipynb_checkpoints/
 
+data/
+glove/
+preprocess.ipynb
+BiLSTM_EN.ipynb
