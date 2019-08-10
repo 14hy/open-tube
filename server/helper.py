@@ -2,7 +2,7 @@
 import subprocess
 
 def __extract_save_reply(youtube_id):
-    __cmd = f"youtube-comment-scraper --format csv -o {youtube_id}.csv {youtube_id}"
+    __cmd = f"youtube-comment-scraper --format csv -o ./csv/{youtube_id}.csv {youtube_id}"
     try:
         subprocess.run(__cmd)
         return 1
