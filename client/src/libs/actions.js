@@ -1,6 +1,5 @@
-import store from './store'
-// import { render } from 'lit-html'
-import { Main } from '../main.js'
+import store from './store.js'
+import { main } from '../main.js'
 
 function actionCreator(action) {
 	return function() {
@@ -10,79 +9,67 @@ function actionCreator(action) {
 	}
 }
 
-// ===================================================== Test code
+export const loadXhr = actionCreator((state, url, callback) => {
+	const xhr = new XMLHttpRequest()
 
-export const countAdd = actionCreator(state => {
-	state.info.count === undefined
-		? state.info.count = 0
-		: state.info.count++
-	return state
-})
+	if(!xhr) {
+		throw new Error(`XHR 호출 불가`)
+	}
 
-export const getData = actionCreator(state => {
-	const db = firebase.firestore()
-
-	db.collection(`TEST`).get().then(querySnapshot => {
-		querySnapshot.forEach(doc => {
-			console.info(doc.id, doc.data())
-		})
+	xhr.open(`GET`, url)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				callback(xhr.responseText)
+			}
+		}
 	})
-	
+	xhr.send()
 	return state
 })
 
-// ===================================================== Example
-
-// export const route = actionCreator((state, _route) => {
-// 	state.route = _route
-
-// 	return state
-// })
-
-export const add = actionCreator((state, todo) => {
-	state.todoList.push({
-		title: todo,
-		completed: false,
-		id: `item-xxxxxxxxxxxx`.replace(/[x]/g, () => {
-			const r = Math.random() * 16 | 0
-
-			return r.toString(16)
-		}),
+export const initLogin = actionCreator((state, callback) => {
+	firebase.auth().onAuthStateChanged(user => {
+		if (user) {
+			const displayName = user.displayName
+			const email = user.email
+			const emailVerified = user.emailVerified
+			const photoURL = user.photoURL
+			const uid = user.uid
+			const phoneNumber = user.phoneNumber
+			const providerData = user.providerData
+			user.getIdToken().then(accessToken => {
+				console.info(`displayName`, displayName)
+				console.info(`email`, email)
+				console.info(`emailVerified`, emailVerified)
+				console.info(`phoneNumber`, phoneNumber)
+				console.info(`photoURL`, photoURL)
+				console.info(`uid`, uid)
+				console.info(`accessToken`, accessToken)
+				console.info(`providerData`, providerData)
+				state.isLogin = true
+				store.setState(state)
+				callback(true)
+			})
+		} else {
+			state.isLogin = false
+			store.setState(state)
+			callback(false)
+			console.info(`sign out`)
+		}
+	}, error => {
+		console.error(error)
 	})
-
 	return state
 })
 
-export const remove = actionCreator((state, id) => {
-	state.todoList = state.todoList.filter(todo => todo.id !== id)
-
-	return state
-})
-
-export const toggle = actionCreator((state, id) => {
-	const todo = state.todoList.find(_todo => _todo.id === id)
-	todo.completed = !todo.completed
-
-	return state
-})
-
-export const replace = actionCreator((state, id, title) => {
-	const todo = state.todoList.find(_todo => _todo.id === id)
-	todo.title = title
-
-	return state
-})
-
-export const toggleAll = actionCreator((state, completed) => {
-	state.todoList.forEach(_todo => {
-		_todo.completed = completed
+export const logout = actionCreator(state => {
+	firebase.auth().signOut().then(() => {
+		main.renderPage(`page-login`, `/`)
+	}).catch(error => {
+		console.error(error)
 	})
-
-	return state
-})
-
-export const clearCompleted = actionCreator(state => {
-	state.todoList = state.todoList.filter(todo => !todo.completed)
 
 	return state
 })

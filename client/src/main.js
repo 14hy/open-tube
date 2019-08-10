@@ -1,50 +1,74 @@
-import './components/page-main.js'
+import './libs/i18n.js'
+import './pages/page-reports.js'
+import './pages/page-login.js'
 
-export class Main {
-	static init() {
-		this.loadingDOM()
+import { initLogin } from './libs/actions.js'
 
-		this.router()
-			.isRoute()
-			.otherwise()
-			.pushUrl()
+const router = {
+	login: {
+		requireLogin: false,
+	},
+	reports: {
+		requireLogin: false,
+	},
+	report: {
+		requireLogin: true,
+	},
+}
+
+export const main = new class {
+	constructor() {
+		this.path = location.pathname
+		this.isContinue = true
 	}
 
-	static router() {
-		let path = location.pathname
-		let isContinue = true
-		if (path === `/`) {path = `/main`}		
-		return {
-			isRoute() {
-				if (isContinue) {
-					Main.renderPage(`page-${path.split(`/`)[1]}`, path)
-					isContinue = false
-				}
-				return this
-			},
-			otherwise() {
-				if (isContinue) {
-					Main._onLoad(() => history.replaceState({}, null, `/main`))
-					Main.renderPage(`page-main`, path)
-					isContinue = false
-				}
-				return this
-			},
-			pushUrl() {
-				if (isContinue) {	
-					Main._onLoad(() => history.pushState({}, null, path))
-				}
-			},
+	init() {
+		if (this.isIE()) {
+			document.querySelector(`main`).innerHTML = `<div>THIS BROWSER NO SUPPORT</div>`
+			return
 		}
+
+		this.loadingDOM()
+		this.connectRoute()		
 	}
 
-	static _onLoad(callback) {
+	// Init functions
+	connectRoute(pathName = this.path.split(`/`)[1] || `login`) {
+		this._onLoad(() => initLogin(isLogin => {
+			this.routeLogin(isLogin, pathName)
+		}))
+	}
+
+	connectLoginNoLoad(pathName = this.path.split(`/`)[1] || `login`) {
+		initLogin(isLogin => {
+			this.routeLogin(isLogin, pathName)
+		})
+	}
+
+	routeLogin(isLogin, pathName) {
+		const isRoute = () => Object.keys(router).includes(pathName)
+		const isNeedLogin = () => isLogin || isLogin === router[pathName][`requireLogin`]
+		
+		if (isRoute() && isNeedLogin()) {
+			this.renderPage(`page-${pathName}`, `/${pathName}`)
+			return
+		}
+		isLogin ? this.renderPage(`page-reports`, `/reports`) : this.renderPage(`page-login`, `/`)
+	}
+
+	// Functions
+
+	_onLoad(callback) {
 		window.addEventListener(`load`, () => {			
 			callback()
 		})
 	}
 
-	static loadingDOM() {
+	isIE() {		
+		return navigator.userAgent.includes(`Trident`) || navigator.userAgent.includes(`MSIE`)
+	}
+
+	loadingDOM() {
 		const root = document.querySelector(`main`)
 		const loading = document.createElement(`div`)
 				
@@ -56,30 +80,16 @@ export class Main {
 		root.appendChild(loading)
 	}
 
-	static renderPage(pageName, path) {		
+	renderPage(pageName, path) {		
 		this.emptyDOM()
 		const pageElement = document.createElement(pageName)
 		document.querySelector(`main`).appendChild(pageElement)
 		history.pushState({}, pageName, path)
 	}	
 
-	static emptyDOM() {
+	emptyDOM() {
 		document.querySelector(`main`).innerHTML = ``	
-	}
+	}	
+}()
 
-	static exceptDOM() {
-		document.querySelector(`main`).innerHTML = `No Route`
-	}
-
-	static renderWaitMain(callback) {
-		if (document.querySelector(`main`)) {
-			callback()
-		} else {
-			Main._onLoad(() => {
-				callback()
-			})		
-		}		
-	}
-}
-
-Main.init()
+main.init()
