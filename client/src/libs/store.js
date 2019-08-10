@@ -2,8 +2,7 @@ import createStore from './redux-zero.js'
 
 const initialState = {
 	info: [] , 
-	todoList: [],
-	login: false,
+	isLogin: false,
 }
 const store = createStore(initialState)
 

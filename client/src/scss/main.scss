@@ -1,0 +1,57 @@
+@import "pages/vars";
+@import "pages/page-reports";
+@import "pages/page-login";
+
+
+@import "components/nav-top";
+@import "components/filter-list";
+@import "components/report-list";
+@import "components/app-footer";
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    height: 98vh;
+
+    & > * {
+        align-self: center;
+        margin: 0 auto;
+    }
+}
+  
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 3px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 40%, 0.4); 
+}
+
+/* FOR IE */
+link, script {
+    display: none !important;
+}

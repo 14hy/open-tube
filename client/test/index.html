@@ -16,7 +16,7 @@
     suite('<page-main />', () => {
         test('is existed', () => {
             const element = document.createElement('page-main');
-            if (element.shadowRoot) {
+            if (element) {
                 console.info(`success`);
             } else {
                 console.error(`fail`);
