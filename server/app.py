@@ -1,11 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
-from api.api import api
-from api.common import *
+from flask_sqlalchemy import SQLAlchemy
+from flask_restplus import Api
+from controlller.reply import extract_reply
+app = Flask(__name__)
+CORS(app)
+app.config.from_pyfile("db.cfg")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db 연결
+db = SQLAlchemy(app)
 
-if __name__ == "__main__":
-    app = Flask(__name__)
-    CORS(app)
+api = Api(app, version="1.0", title="OPEN TUBE", description="OPEN TUBE API")
 
-    api.init_app(app)
-    app.run(host=FLASK_CONFIG.host, port=FLASK_CONFIG.port, debug=FLASK_CONFIG.debug)
+api.add_namespace(extract_reply, path="/extract")
+
