@@ -1,0 +1,10 @@
+#pageReports {
+    display: grid;
+    background-color: white;
+    width: 98vw;
+    height: 98vh;
+    margin: 0 auto;
+    overflow: hidden;
+    grid-template-columns: minmax(0, 250px) minmax(0, auto);
+    grid-template-rows: 70px calc(100vh - 110px) 40px;    
+}

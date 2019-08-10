@@ -249,7 +249,7 @@ module.exports = {
         "quotes": [1, "backtick"],
         "semi": [1, "never"],
         // "max-params": [1, 2],
-        "max-lines-per-function": [2, 30],
+        "max-lines-per-function": [1, {"max": 40,  "skipBlankLines": true, "skipComments": true}],
 
         // ECMAScript 6
         "arrow-body-style": 1,
@@ -272,5 +272,6 @@ module.exports = {
     "globals": {
         "chrome": true,
         "firebase": true,
+        "firebaseui": true,
     }
 };
