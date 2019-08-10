@@ -1,2 +1,8 @@
 ## config
 db.cfg
+
+##__pycache__
+__pycache__/*
+
+##csv
+*.csv
