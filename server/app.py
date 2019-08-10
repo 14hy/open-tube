@@ -12,5 +12,5 @@ db = SQLAlchemy(app)
 
 api = Api(app, version="1.0", title="OPEN TUBE", description="OPEN TUBE API")
 
-api.add_namespace()
+extract_reply = api.namespace()
 
