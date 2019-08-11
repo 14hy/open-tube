@@ -8,7 +8,7 @@ __pycache__/
 *.csv
 *.pyc
 ##json
-*.json
+json/*.json
 node_modules
 ### https://raw.github.com/github/gitignore/4215c0f78cf6ac52f3b943b7b0904cfc470d032e/node.gitignore
 # Logs
