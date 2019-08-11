@@ -1,5 +1,6 @@
 import psycopg2
 import configparser
+from sqlalchemy import create_engine
 def config(filename='db.cfg', section='postgresql'):
     # create a parser
     parser = configparser.ConfigParser()
@@ -16,6 +17,8 @@ def config(filename='db.cfg', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
  
     return db
-
+configs = configparser.ConfigParser()
+configs.read("db.cfg")
+engine = create_engine(configs.get('flask', 'SQLALCHEMY_DATABASE_URI'), encoding='utf-8')
 params = config()
 conn = psycopg2.connect(**params)

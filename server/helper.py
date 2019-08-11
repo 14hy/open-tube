@@ -3,7 +3,7 @@
 import subprocess
 import pandas as pd
 import sys
-from db_connect import conn
+from db_connect import conn, engine
 
 
 def exist_test(table):
@@ -21,7 +21,7 @@ def exist_test(table):
 def extract_save_reply(youtube_url):
     youtube_key = youtube_url.split("?v=")[-1]
     youtube_key = youtube_key.split("&")[0]
-    __cmd = f"./run_cralwer.sh {youtube_url} {youtube_key}"
+    __cmd = f"./run_crawler.sh {youtube_url} {youtube_key}"
     print(__cmd)
     try:
         subprocess.call(__cmd, shell=True)
@@ -35,7 +35,7 @@ def make_table(youtube_url):
     youtube_key = youtube_url.split("?v=")[-1]
     youtube_key = youtube_key.split("&")[0]
     reply_df = pd.read_json(f"json/{youtube_key}.json")
-    reply_df.to_sql(youtube_key, con, if_exists='replace')
+    reply_df.to_sql(youtube_key, engine, if_exists='replace')
     # insert data
 
 
