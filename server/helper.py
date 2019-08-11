@@ -21,6 +21,7 @@ def exist_test(table):
 def extract_save_reply(youtube_url):
     youtube_key = youtube_url.split("?v=")[-1]
     youtube_key = youtube_key.split("&")[0]
+    youtube_key = youtube_key.lower()
     __cmd = f"./run_crawler.sh {youtube_url} {youtube_key}"
     print(__cmd)
     try:
@@ -35,13 +36,15 @@ def extract_save_reply(youtube_url):
 def make_table(youtube_url):
     youtube_key = youtube_url.split("?v=")[-1]
     youtube_key = youtube_key.split("&")[0]
+    youtube_key = youtube_key.lower()
     reply_df = pd.read_json(f"json/{youtube_key}.json")
     reply_df.to_sql(youtube_key, engine, if_exists='replace')
     # insert data
 
 
 def get_table_data(table, func_name):
-    if(func_name == "Sentiment"):
+    table = table.lower()
+    if(func_name == "sentiment"):
         cur = conn.cursor()
         query = f"SELECT root FROM {table}"
         cur.execute(query)
