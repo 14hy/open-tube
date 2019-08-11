@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## help function들을 모은 집합입니다
 import subprocess
 import pandas as pd

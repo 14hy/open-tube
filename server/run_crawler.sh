@@ -1,2 +1,2 @@
 #!/bin/bash
-./crawler/bin/cli.js $1
+./crawler/bin/cli.js $1 $2
