@@ -57,11 +57,3 @@ class SentimentAnalysisKR:
         df = pd.DataFrame(pred)
         return df
 
-
-# 테스트
-test = SentimentAnalysisKR(word2vec_path = "E:/jhm/open-tube/server/tensorflow/model/word2vec/word2vec.model")
-X = [
-    "아 귀여워 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
-    "아이유 개졸귀 ㅜㅜ너무 귀여워"
-]
-test.score(X = X)

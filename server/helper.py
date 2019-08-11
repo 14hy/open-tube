@@ -4,8 +4,8 @@ import subprocess
 import pandas as pd
 import sys
 from db_connect import conn, engine
-
-
+# from tensorflow.src.SentimentAnalysisKR import SentimentAnalysisKR
+from src import keyword
 def exist_test(table):
     cur = conn.cursor()
     query = f"SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' and table_name={table}"
@@ -40,18 +40,38 @@ def make_table(youtube_url):
     # insert data
 
 
-# def get_table_data(table, func):
-#     #데이터 가져오기
-#     #func 실행시키기
-    
+def get_table_data(table, func_name):
+    if(func_name == "Sentiment"):
+        cur = conn.cursor()
+        query = f"SELECT root FROM {table}"
+        cur.execute(query)
+        result = cur.fetchall()
+        result = [row[0] for row in result]
+        temp = SentimentAnalysisKR.score(result)
+        print(temp)
+    elif(func_name == "keyword"):
+        cur = conn.cursor()
+        query = f"SELECT root FROM {table}"
+        cur.execute(query)
+        result = cur.fetchall()
+        result = [row[0] for row in result]
+        temp = get_cnt_words(result)
+        print(temp)
+        
 
 if __name__ == "__main__":
     if (len(sys.argv) < 3):
         print("input function argument")
         exit
-    func_name = sys.argv[1]
-    youtube_url = sys.argv[2]
-    globals()[func_name](youtube_url)
+    if (len(sys.argv) ==3):
+        func_name = sys.argv[1]
+        youtube_url = sys.argv[2]
+        globals()[func_name](youtube_url)
+    elif(len(sys.argv)>3):
+        func_name = sys.argv[1]
+        table_name = sys.argv[2]
+        func_name2 = sys.argv[3]
+        globals()[func_name](table_name,func_name2)
     # func_name(youtube_url)
 
 
