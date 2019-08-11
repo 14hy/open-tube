@@ -31,6 +31,7 @@ def extract_save_reply(youtube_url):
         print(e)
         return 0
 
+
 def make_table(youtube_url):
     youtube_key = youtube_url.split("?v=")[-1]
     youtube_key = youtube_key.split("&")[0]
@@ -52,6 +53,7 @@ if __name__ == "__main__":
     youtube_url = sys.argv[2]
     globals()[func_name](youtube_url)
     # func_name(youtube_url)
+
 
 
 
