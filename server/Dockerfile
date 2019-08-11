@@ -1,4 +1,4 @@
-
+FROM ubuntu:18.04
 MAINTAINER OPEN-TUBE, "rhodochrosited@gmail.com"
 
 # Ubuntu update 이 후 python, gcc등 소스코드 빌더 설치
