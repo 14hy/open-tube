@@ -14,4 +14,4 @@ server/
 *.cache
 
 # style-bundle
-./public/src/css/style.css
+public/src/css/style.css

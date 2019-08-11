@@ -18,12 +18,14 @@ export class FilterList extends HTMLElement {
 			handleEvent() { 
 				const modal = document.querySelector(`modal-request-report`)
 				
-				if (initLogin()) {
-					modal.show()
-					return
-				}
-				alert(`로그인이 필요합니다. 로그인 페이지로 이동`)
-				main.connectLoginNoLoad(`login`)
+				initLogin(isLogin => {
+					if (isLogin) {
+						modal.show()
+						return
+					}
+					alert(`로그인이 필요합니다. 로그인 페이지로 이동`)
+					main.connectLoginNoLoad(`login`)
+				})				
 				
 			},
 			capture: true,
