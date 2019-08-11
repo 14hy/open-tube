@@ -32,7 +32,7 @@ def _prep_text(text, morphs=False):
     return ' '.join(text)
 
 
-def get_cnt_words(replies: iter, prep_fn) -> dict:
+def get_cnt_words(replies: iter, prep_fn=_prep_text) -> dict:
     """
     단어 빈도를 세줍니다.
     replies: string iterator, 댓글들
