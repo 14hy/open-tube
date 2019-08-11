@@ -3,8 +3,10 @@ import { html, render } from 'lit-html'
 export class ReportList extends HTMLElement {
 	constructor() {
 		super()		
-
-		render(this.render(), this)
+	}
+    
+	connectedCallback() {
+		render(this.render(), this)		
 	}
 
 	render() {
@@ -18,8 +20,8 @@ export class ReportList extends HTMLElement {
 
 const li = html`
 <li class="li-report">
-    <div class="report-title">유튜브 레포트 1</div>
-    <div class="report-desc">레포트 설명레포트 설명</div>
+    <div class="report-title">유튜브 영상 제목</div>
+    <div class="report-desc">유튜브 영상 URL</div>
 </li>
 `
 

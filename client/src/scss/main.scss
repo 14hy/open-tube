@@ -8,6 +8,8 @@
 @import "components/report-list";
 @import "components/app-footer";
 
+@import "components/modal-request-report";
+
 html {
     box-sizing: border-box;
 }
@@ -21,7 +23,7 @@ body {
 
 main {
     display: flex;
-    height: 98vh;
+    height: 100vh;
 
     & > * {
         align-self: center;
@@ -49,6 +51,10 @@ main {
 
 *::-webkit-scrollbar-thumb {
     background: hsla(0, 0%, 40%, 0.4); 
+}
+
+button {
+    outline: none;
 }
 
 /* FOR IE */

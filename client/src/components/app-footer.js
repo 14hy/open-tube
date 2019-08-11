@@ -3,8 +3,10 @@ import { html, render } from 'lit-html'
 export class AppFooter extends HTMLElement {
 	constructor() {
 		super()
+	}
 
-		render(this.render(), this)
+	connectedCallback() {
+		render(this.render(), this)		
 	}
 
 	render() {

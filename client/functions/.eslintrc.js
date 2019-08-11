@@ -121,7 +121,7 @@ module.exports = {
         "guard-for-in": 1,
         // 파일당 클래스 제한
         "max-classes-per-file": [1, 1],
-        "no-alert": 0,
+        "no-alert": 1,
         // 보안상, 함수의 arguments를 이용한 코딩 금지
         "no-caller": 1,
         // case문에서 let, const는 괄호 사용

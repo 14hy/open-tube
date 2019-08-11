@@ -29,7 +29,7 @@ export const main = new class {
 		}
 
 		this.loadingDOM()
-		this.connectRoute()		
+		this.connectRoute()
 	}
 
 	// Init functions

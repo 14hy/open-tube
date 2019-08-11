@@ -48,6 +48,8 @@ export class PageLogin extends HTMLElement {
 			signInSuccessUrl: `/reports`,
 			signInOptions: [
 				firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+				firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+				firebase.auth.GithubAuthProvider.PROVIDER_ID,
 			],
 			tosUrl: `/reports`,
 			signInFlow: `popup`,

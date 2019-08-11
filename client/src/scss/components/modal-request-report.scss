@@ -1,0 +1,149 @@
+modal-request-report {
+    display: flex;
+    transform: scale(0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+
+    .modal-report {
+        max-width: 90vw;
+        width: 450px;
+        max-height: 80vh;
+        height: 500px;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 40px 77px rgba(0, 0, 0, 0.22), 0 27px 24px rgba(0, 0, 0, 0.2);        
+
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 50px auto 50px;
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background-color: #757575;
+            color: white;
+            position: relative;
+            user-select: none;
+
+            .fi-x {
+                position: absolute;
+                right: 20px;
+                transition: color 0.2s ease;
+
+                &:hover {
+                    color: black;
+                }
+            }
+        }
+
+        .modal-body {
+            overflow-y: scroll;
+
+            .url-box {
+                margin: 40px 20px 20px 20px;
+
+                .url-label {
+                    color: #B7B7B7;
+                }
+    
+                #inputYoutubeURL {
+                    border: 0;
+                    border-bottom: 1px solid #B7B7B7;
+                    outline: none;
+                    color: hsl(0, 0%, 52%);
+                    padding: 0;
+
+                    &:hover, &:focus {
+                        border-bottom: 1px solid #B7B7B7;
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            .analysis-box {
+                margin: 40px 20px 20px 20px;
+
+                .label-analysis-list {
+                    color: #B7B7B7;
+                }
+
+                ul {
+                    list-style-type: none;
+                    margin: 0;
+                    height: 190px;
+                    overflow-y: scroll;
+                    padding-right: 10px;
+
+                    li {
+                        background-color: #e6e6e6;
+                        margin: 10px 0;
+                        padding: 10px;
+                    }
+                    input[type="checkbox"] {
+                        position: absolute;
+                        visibility: hidden;
+                        left: -99999px;
+                    }
+                    input[type="checkbox"] ~ label{
+                        position: relative;
+                        margin-left: 2rem;
+                    }
+                    input[type="checkbox"] ~ label:before {
+                        background: white;
+                        border: 1px solid #e6e6e6;
+                        content: '';
+                        display: block;
+                        height: 20px;
+                        left: -2rem;
+                        width: 20px;
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-80%);
+                    }
+
+                    // Active state
+                    input[type="checkbox"]:checked ~ label:before {
+                        font-family: "foundation-icons";
+                        font-size: 18px;
+                        text-rendering: auto;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        content: "\f126";
+                        color: #1779ba;
+                        border: 1px solid #1779ba;
+                        padding-left: 2px;
+                    }
+                }
+            }
+        }
+
+        .modal-footer {            
+            display: flex;
+            align-items: center;            
+            justify-content: center;
+
+            .submit-request {
+                width: 60%;
+                height: 80%;
+                border-radius: 20px;
+                background-color: #BEBCBC;
+                color: white;
+                font-size: 16px;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #757575;
+                }
+            }
+        }
+    }
+}

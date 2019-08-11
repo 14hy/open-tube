@@ -4,17 +4,18 @@ import i18next from 'i18next'
 import store from '../libs/store.js'
 import { logout } from '../libs/actions.js'
 import { main } from '../main.js'
+import { xhrFirebase, getUserInfo } from '../libs/actions.js'
 
 export class NavTop extends HTMLElement {
 	constructor() {
 		super()
 
 		this._handlers = {}
-
-		render(this.render(), this)
 	}
 
 	connectedCallback() {
+		render(this.render(), this)
+		
 		const handlers = this._handlers
 
 		handlers.onClick = this._onClick.bind(this)
@@ -24,6 +25,30 @@ export class NavTop extends HTMLElement {
 
 	disconnectedCallback() {
 		this.removeEventListener(`click`, this._handlers.onClick)
+	}
+
+	get btnLogout() {
+		getUserInfo(info => {
+			if (!info) {
+				return
+			}
+			xhrFirebase(`/isAdmin/${info.uid}`, isAdmin => {
+				const _isAdmin = JSON.parse(isAdmin)
+				if (_isAdmin) {
+					this.querySelector(`.user-name`).textContent = `관리자`
+					return
+				}
+				this.querySelector(`.user-name`).textContent = info.displayName
+			})
+		})		
+		return html`
+		<span class="user-name"></span>
+		<span class="login-btn-logout">Logout</span>
+		`
+	}
+
+	get signIn() {
+		return html`<span class="nav-sign-in">SIGN IN</span>`	
 	}
 
 	_onClick(event) {
@@ -43,16 +68,15 @@ export class NavTop extends HTMLElement {
 		}
 	}
 
+	
+
 	render() {
 		const isLogin = store.getState().isLogin
 		return html` 
         <h1 class="nav-title">${i18next.t(`APP_NAME`)}</h1>
-        ${isLogin ? btnLogout : signIn}
+        ${isLogin ? this.btnLogout : this.signIn}
         `
 	}
 }
-
-const btnLogout = html`<span class="login-btn-logout">Logout</span>`
-const signIn = html`<span class="nav-sign-in">SIGN IN</span>`
 
 customElements.define(`nav-top`, NavTop)
