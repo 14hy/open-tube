@@ -5,7 +5,7 @@ from flask_restplus import Api
 
 app = Flask(__name__)
 CORS(app)
-app.config.from_pyfile("db.cfg")
+app.config.from_pyfile("/server-config/db.cfg")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # db 연결
 db = SQLAlchemy(app)
