@@ -1,0 +1,76 @@
+modal-report {
+    display: flex;
+    transform: scale(0);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.16);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;    
+    transition: transform 0.2s ease;
+
+    .modal-report {
+        max-width: 90vw;
+        width: 1280px;
+        max-height: 90vh;
+        height: 90vh;
+        background-color: white;
+        border-radius: 3px;
+        position: relative;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.26);
+
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+        
+        .fi-x {
+            color: #C8C8C8;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: color 0.2s ease;
+            z-index: 100;
+
+            &:hover {
+                color: black;
+            }
+        }
+
+        .modal-body {
+            overflow-y: scroll;            
+
+            .modal-header {
+                display: flex;
+                height: 50px;
+                align-items: center;
+                font-size: 24px;          
+                position: relative;
+                user-select: none;
+    
+                .modal-title {
+                    color: black;
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: #757575;
+                    margin-top: 60px;
+                    margin-left: 40px;
+                }                
+            }
+
+            .modal-footer {            
+                display: flex;
+                position: absolute;
+                bottom: 0;
+                height: 40px;
+                align-items: center;            
+                padding-left: 10px;
+                font-size: 12px;
+                border-top: 1px solid #C8C8C8;
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }        
+    }
+}

@@ -5,6 +5,7 @@ import '../components/filter-list.js'
 import '../components/report-list.js'
 import '../components/app-footer.js'
 import '../components/modal-request-report.js'
+import '../components/modal-report.js'
 
 export class PageReports extends HTMLElement {
 	constructor() {
@@ -27,6 +28,7 @@ export class PageReports extends HTMLElement {
 			<app-footer></footer>
 		</div>
 		<modal-request-report></modal-request-report>
+		<modal-report></modal-report>
         `
 	}
 }

@@ -51,15 +51,14 @@ export class PageLogin extends HTMLElement {
 				firebase.auth.FacebookAuthProvider.PROVIDER_ID,
 				firebase.auth.GithubAuthProvider.PROVIDER_ID,
 			],
-			tosUrl: `/reports`,
+			tosUrl: `/`,
 			signInFlow: `popup`,
 			privacyPolicyUrl: () => {
-				window.location.assign(`/reports`)
+				window.location.assign(`/`)
 			},
 		}	
 		const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
 		const loginBox = this.querySelector(`.login-box`)
-
 		if (!store.getState().isLogin) {
 			ui.start(loginBox, uiConfig)
 			return

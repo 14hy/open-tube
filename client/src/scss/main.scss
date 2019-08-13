@@ -1,4 +1,4 @@
-@import "pages/vars";
+@import "vars";
 @import "pages/page-reports";
 @import "pages/page-login";
 
@@ -9,6 +9,7 @@
 @import "components/app-footer";
 
 @import "components/modal-request-report";
+@import "components/modal-report";
 
 html {
     box-sizing: border-box;

@@ -60,6 +60,7 @@ modal-request-report {
                     outline: none;
                     color: hsl(0, 0%, 52%);
                     padding: 0;
+                    box-shadow: none;
 
                     &:hover, &:focus {
                         border-bottom: 1px solid #B7B7B7;

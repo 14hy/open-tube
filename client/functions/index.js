@@ -6,8 +6,9 @@ const admin = require(`firebase-admin`)
 admin.initializeApp(functions.config().firebase)
 
 const app = express()
+const db = admin.firestore()
 
-const whiteList = [`https://open-tube.web.app`, `localhost`]
+const whiteList = [`https://open-tube.web.app`, `https://open-tube.kro.kr`, `localhost:9000`]
 app.use(cors({
 	origin: (origin, callback) => {
 		if (whiteList.indexOf(origin) === -1) {
@@ -24,6 +25,21 @@ app.get(`/isAdmin/:uid`, (req, res) => {
 	}
     
 	res.send(req.params.uid === functions.config().admin.uid)
+})
+
+app.get(`/:uid/reportList`, (req, res) => {
+	if (!req.xhr) {
+		res.send(`ONLY REQUEST AJAX`)
+	}
+
+	db.doc(`userId/${req.params.uid}`).get()
+		.then(q => {			
+			res.send(q.data())
+		})
+		.catch(err => {
+			console.error(`Error getting documents`, err)
+			res.send(`Error getting documents: ${err}`)
+		})
 })
 
 exports.server = functions.https.onRequest(app)

@@ -1,20 +1,8 @@
 import './libs/i18n.js'
+import store from './libs/store.js'
+
 import './pages/page-reports.js'
 import './pages/page-login.js'
-
-import { initLogin } from './libs/actions.js'
-
-const router = {
-	login: {
-		requireLogin: false,
-	},
-	reports: {
-		requireLogin: false,
-	},
-	report: {
-		requireLogin: true,
-	},
-}
 
 export const main = new class {
 	constructor() {
@@ -34,26 +22,23 @@ export const main = new class {
 
 	// Init functions
 	connectRoute(pathName = this.path.split(`/`)[1] || `login`) {
-		this._onLoad(() => initLogin(isLogin => {
-			this.routeLogin(isLogin, pathName)
-		}))
-	}
-
-	connectLoginNoLoad(pathName = this.path.split(`/`)[1] || `login`) {
-		initLogin(isLogin => {
-			this.routeLogin(isLogin, pathName)
+		this._onLoad(() => {
+			if (store.getState().isLogin) {
+				this.routeLogin(pathName)
+			}			
 		})
 	}
 
-	routeLogin(isLogin, pathName) {
-		const isRoute = () => Object.keys(router).includes(pathName)
-		const isNeedLogin = () => isLogin || isLogin === router[pathName][`requireLogin`]
+	connectLoginNoLoad(pathName = this.path.split(`/`)[1] || `login`) {
+		this.routeLogin(pathName)
+	}
+
+	routeLogin(pathName) {
+		const isRoute = () => Object.keys(store.getState().router).includes(pathName)
 		
-		if (isRoute() && isNeedLogin()) {
+		if (isRoute()) {
 			this.renderPage(`page-${pathName}`, `/${pathName}`)
-			return
 		}
-		isLogin ? this.renderPage(`page-reports`, `/reports`) : this.renderPage(`page-login`, `/`)
 	}
 
 	// Functions

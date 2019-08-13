@@ -4,7 +4,7 @@ import i18next from 'i18next'
 import store from '../libs/store.js'
 import { logout } from '../libs/actions.js'
 import { main } from '../main.js'
-import { xhrFirebase, getUserInfo } from '../libs/actions.js'
+import { xhrFirebase } from '../libs/actions.js'
 
 export class NavTop extends HTMLElement {
 	constructor() {
@@ -28,19 +28,21 @@ export class NavTop extends HTMLElement {
 	}
 
 	get btnLogout() {
-		getUserInfo(info => {
-			if (!info) {
+		const info = store.getState().userInfo
+
+		if (!info) {
+			return html``
+		}
+		
+		xhrFirebase(`/isAdmin/${info.uid}`, isAdmin => {
+			const _isAdmin = JSON.parse(isAdmin)
+			if (_isAdmin) {
+				this.querySelector(`.user-name`).textContent = `관리자`
 				return
 			}
-			xhrFirebase(`/isAdmin/${info.uid}`, isAdmin => {
-				const _isAdmin = JSON.parse(isAdmin)
-				if (_isAdmin) {
-					this.querySelector(`.user-name`).textContent = `관리자`
-					return
-				}
-				this.querySelector(`.user-name`).textContent = info.displayName
-			})
-		})		
+			this.querySelector(`.user-name`).textContent = info.displayName
+		})
+	
 		return html`
 		<span class="user-name"></span>
 		<span class="login-btn-logout">Logout</span>

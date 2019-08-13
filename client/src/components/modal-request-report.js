@@ -34,8 +34,8 @@ export class ModalRequestReport extends HTMLElement {
 			<label class="label-analysis-list">${i18next.t(`MODAL_REQUEST_LABEL_ANALYSIS`)}</label>
 			<ul>
 				<li><input id="item1" type="checkbox" checked/><label for="item1"></label>댓글 감성 분석</li>
-				<li><input id="item2" type="checkbox" checked/><label for="item2"></label>영상 객체 분석</li>
-				<li><input id="item3" type="checkbox" checked/><label for="item3"></label>Item 3</li>
+				<li><input id="item2" type="checkbox" checked/><label for="item2"></label>키워드 분석</li>
+				<li><input id="item3" type="checkbox" checked/><label for="item3"></label>영상 객체 분석</li>
 				<li><input id="item4" type="checkbox" checked/><label for="item4"></label>Item 4</li>
 			</ul>
 		</div>
