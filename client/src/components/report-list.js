@@ -74,7 +74,6 @@ export class ReportList extends HTMLElement {
 		}
 
 		ul.innerHTML = ``
-		console.log()
 		render(html`
 			${Object.values(_db).map(i => li(i))}
 		`, ul)
