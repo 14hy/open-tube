@@ -1,7 +1,7 @@
 import psycopg2
 import configparser
 from sqlalchemy import create_engine
-def config(filename='db2.cfg', section='postgresql'):
+def config(filename='/server-config/db2.cfg', section='postgresql'):
     # create a parser
     parser = configparser.ConfigParser()
     # read config file
@@ -18,7 +18,7 @@ def config(filename='db2.cfg', section='postgresql'):
  
     return db
 configs = configparser.ConfigParser()
-configs.read("db2.cfg")
+configs.read("/server-config/db2.cfg")
 engine = create_engine(configs.get('flask', 'SQLALCHEMY_DATABASE_URI'), encoding='utf-8')
 params = config()
 conn = psycopg2.connect(**params)
