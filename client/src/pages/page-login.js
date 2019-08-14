@@ -47,7 +47,12 @@ export class PageLogin extends HTMLElement {
 		const uiConfig = {
 			signInSuccessUrl: `/reports`,
 			signInOptions: [
-				firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+				{
+					provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+					customParameters: {
+						prompt: `select_account`,
+					},
+				},
 				firebase.auth.FacebookAuthProvider.PROVIDER_ID,
 				firebase.auth.GithubAuthProvider.PROVIDER_ID,
 			],
