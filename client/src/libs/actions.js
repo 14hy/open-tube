@@ -51,6 +51,8 @@ export const xhrFirebase = actionCreator((state, path, callback) => {
 
 export const logout = actionCreator(state => {
 	firebase.auth().signOut().then(() => {
+		state.isLogin = false
+		store.setState(state)
 		alert(`로그인이 필요합니다. 로그인 페이지로 이동`)
 		main.renderPage(`page-login`, `/`)
 	}).catch(error => {

@@ -133,7 +133,6 @@ export const main = new class {
 					state.isLogin = false
 					state.userInfo = {}
 					store.setState(state)
-					main.connectLoginNoLoad()
 					resolve()
 				}
 			}, error => {
