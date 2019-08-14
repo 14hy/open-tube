@@ -10,23 +10,36 @@ export const main = new class {
 		this.isContinue = true
 	}
 
-	init() {
+	async init() {
 		if (this.isIE()) {
 			document.querySelector(`main`).innerHTML = `<div>THIS BROWSER NO SUPPORT</div>`
 			return
 		}
 
-		this.loadingDOM()
+		firebase.initializeApp({
+			apiKey: `AIzaSyBfd5CP6NWbLOUGMiZ5Z0Kh-n0ciVaAWsQ`,
+			authDomain: `open-tube.web.app`,
+			databaseURL: `https://open-tube-4c423.firebaseio.com`,
+			projectId: `open-tube-4c423`,
+			storageBucket: ``,
+			messagingSenderId: `23035864360`,
+			appId: `1:23035864360:web:66704a6d558311a0`,
+		})
+
+		await this.initLoginState()
+		
 		this.connectRoute()
 	}
 
 	// Init functions
 	connectRoute(pathName = this.path.split(`/`)[1] || `login`) {
 		this._onLoad(() => {
-			if (store.getState().isLogin) {
-				this.routeLogin(pathName)
-			}			
+			this.routeLogin(pathName)
 		})
+
+		if (document.readyState === `complete`) {
+			this.routeLogin(pathName)
+		}
 	}
 
 	connectLoginNoLoad(pathName = this.path.split(`/`)[1] || `login`) {
@@ -34,17 +47,29 @@ export const main = new class {
 	}
 
 	routeLogin(pathName) {
+		const isLogin = store.getState().isLogin
 		const isRoute = () => Object.keys(store.getState().router).includes(pathName)
-		
-		if (isRoute()) {
-			this.renderPage(`page-${pathName}`, `/${pathName}`)
+		const canMove = () => isLogin || isLogin === store.getState().router[pathName][`requireLogin`]
+		const moveBasedLogin = (loginUrl, noLoginUrl) => {
+			isLogin ? this.renderPage(`page-${loginUrl}`, `/${loginUrl}`) : this.renderPage(`page-${noLoginUrl}`, `/${noLoginUrl}`)
 		}
+		
+		if (!isRoute()) {
+			moveBasedLogin(`reports`, `login`)
+			return
+		}
+
+		if (canMove()) {
+			this.renderPage(`page-${pathName}`)			
+			return
+		}
+		moveBasedLogin(`reports`, `login`)
 	}
 
 	// Functions
 
 	_onLoad(callback) {
-		window.addEventListener(`load`, () => {			
+		window.addEventListener(`DOMContentLoaded`, () => {
 			callback()
 		})
 	}
@@ -74,7 +99,48 @@ export const main = new class {
 
 	emptyDOM() {
 		document.querySelector(`main`).innerHTML = ``	
-	}	
+	}
+
+	initLoginState() {
+		return new Promise((resolve, reject) => {
+			const state = store.getState()
+			firebase.auth().onAuthStateChanged(user => {
+				if (user) {
+					const displayName = user.displayName
+					const email = user.email
+					const emailVerified = user.emailVerified
+					const photoURL = user.photoURL
+					const uid = user.uid
+					const phoneNumber = user.phoneNumber
+					const providerData = user.providerData			
+		
+					user.getIdToken().then(accessToken => {
+						state.isLogin = true
+						state.userInfo = {
+							displayName,
+							email,
+							emailVerified,
+							phoneNumber,
+							photoURL,
+							uid,
+							accessToken,
+							providerData,
+						}
+						store.setState(state)
+						resolve()
+					})
+				} else {
+					state.isLogin = false
+					state.userInfo = {}
+					store.setState(state)
+					main.connectLoginNoLoad()
+					resolve()
+				}
+			}, error => {
+				reject(error)
+			})
+		})	
+	}
 }()
 
 main.init()

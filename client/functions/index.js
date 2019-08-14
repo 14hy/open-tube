@@ -8,7 +8,7 @@ admin.initializeApp(functions.config().firebase)
 const app = express()
 const db = admin.firestore()
 
-const whiteList = [`https://open-tube.web.app`, `https://open-tube.kro.kr`, `localhost`]
+const whiteList = [`https://open-tube.web.app`, `https://open-tube.kro.kr`, `http://localhost:9000`]
 app.use(cors({
 	origin: (origin, callback) => {
 		if (whiteList.includes(origin)) {

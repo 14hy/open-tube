@@ -1,5 +1,8 @@
 const path = require(`path`)
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`)
+const webpack = require(`webpack`)
+const Stylish = require(`webpack-stylish`)
+// const Visualizer = require(`webpack-visualizer-plugin`)
 
 module.exports = {
 	entry: {
@@ -12,6 +15,9 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractPlugin({ filename: `src/css/style.css` }),
 		require(`autoprefixer`),
+		new webpack.NamedModulesPlugin(),
+		new Stylish(),
+		/* new Visualizer(), */
 	],
 	module: {
 		rules: [
