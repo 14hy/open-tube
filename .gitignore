@@ -1,6 +1,7 @@
 .ipynb_checkpoints/
-
 data/
 glove/
-preprocess.ipynb
-BiLSTM_EN.ipynb
+tensorflow/
+.idea/
+word2vec/
+__pycache__/
