@@ -39,7 +39,8 @@ modal-report {
         }
 
         .modal-body {
-            overflow-y: scroll;            
+            overflow-y: scroll;
+            position: relative;          
 
             .modal-header {
                 display: flex;
@@ -59,6 +60,13 @@ modal-report {
                 }                
             }
 
+            iframe {
+                display: inline-block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 50px 10px 20px 20px;
+            }
+
             .modal-footer {            
                 display: flex;
                 position: absolute;
@@ -68,7 +76,8 @@ modal-report {
                 padding-left: 10px;
                 font-size: 12px;
                 border-top: 1px solid #C8C8C8;
-                width: 100%;
+                margin-left: 5px;
+                width: calc(100% - 5px);
                 justify-content: flex-start;
             }
         }        

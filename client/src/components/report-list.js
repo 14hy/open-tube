@@ -15,11 +15,13 @@ export class ReportList extends HTMLElement {
 
 	clickReport() {
 		return {
-			handleEvent() {
+			handleEvent(event) {
 				const modal = document.querySelector(`modal-report`)
-				
+				const target = event.currentTarget
+				const vid = new URL(target.querySelector(`.report-desc a`).textContent).searchParams.get(`v`)
 				if(store.getState().isLogin) {
-					modal.show()
+					// autoplay=0&rel=0&controls=0&showinfo=0&cc_load_policy=0&iv_load_policy=3&
+					modal.show(`https://www.youtube.com/embed/${vid}?autoplay=0&rel=0&showinfo=0&cc_load_policy=0&iv_load_policy=3&modestbranding=1`)
 					return
 				}
 
