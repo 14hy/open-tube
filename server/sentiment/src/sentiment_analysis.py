@@ -2,10 +2,10 @@ from gensim.models import Word2Vec
 import numpy as np
 from konlpy.tag import Okt
 import pycurl
+import pandas as pd
 from io import BytesIO
 import json
-import preprocess
-import pandas as pd
+import sentiment.src.preprocess
 
 
 class SentimentAnalysis:
