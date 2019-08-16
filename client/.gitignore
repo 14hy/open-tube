@@ -12,3 +12,7 @@ dist/
 zip/
 server/
 *.cache
+
+# style-bundle
+public/src/css/style.css
+stats.html

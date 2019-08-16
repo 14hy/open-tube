@@ -1,0 +1,43 @@
+{
+  "name": "youtube-comment-scraper",
+  "version": "0.2.2",
+  "description": "Scraping comments from Youtube.",
+  "keywords": [
+    "scraping",
+    "youtube"
+  ],
+  "main": "./lib/scraper.js",
+  "bin": {
+    "scraper": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "./bin/cli.js",
+    "check-update": "ncu -u"
+  },
+  "author": "Junpei Kawamoto <kawamoto.junpei@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "bin",
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itslab-kyushu/youtube-comment-scraper.git"
+  },
+  "homepage": "https://itslab-kyushu.github.io/youtube-comment-scraper",
+  "bugs": {
+    "url": "https://github.com/itslab-kyushu/youtube-comment-scraper/issues"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "json2csv": "^4.5.2",
+    "phantom": "^4.0.0",
+    "yargs": "^8.0.1"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^2.10.2"
+  }
+}

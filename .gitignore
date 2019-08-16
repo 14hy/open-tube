@@ -1,7 +1,14 @@
 .ipynb_checkpoints/
+
 data/
 glove/
 tensorflow/
 .idea/
 word2vec/
 __pycache__/
+=======
+
+data/
+glove/
+preprocess.ipynb
+BiLSTM_EN.ipynb

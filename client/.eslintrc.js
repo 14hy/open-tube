@@ -121,7 +121,7 @@ module.exports = {
         "guard-for-in": 1,
         // 파일당 클래스 제한
         "max-classes-per-file": [1, 1],
-        "no-alert": 1,
+        "no-alert": 0,
         // 보안상, 함수의 arguments를 이용한 코딩 금지
         "no-caller": 1,
         // case문에서 let, const는 괄호 사용
@@ -249,7 +249,7 @@ module.exports = {
         "quotes": [1, "backtick"],
         "semi": [1, "never"],
         // "max-params": [1, 2],
-        "max-lines-per-function": [2, 30],
+        "max-lines-per-function": [1, {"max": 40,  "skipBlankLines": true, "skipComments": true}],
 
         // ECMAScript 6
         "arrow-body-style": 1,
@@ -272,5 +272,6 @@ module.exports = {
     "globals": {
         "chrome": true,
         "firebase": true,
+        "firebaseui": true,
     }
 };
