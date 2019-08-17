@@ -4,5 +4,5 @@ import os
 
 POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
 
-engine = create_engine(f'postgresql://opentube:{POSTGRES_PASSWORD}@101.101.164.71:32352/opentube', encoding='utf-8')
-conn = psycopg2.connect(host='101.101.167.71', port=32352, user='opentube', database='opentube', password=POSTGRES_PASSWORD)
+engine = create_engine(f'postgres://postgres:{POSTGRES_PASSWORD}@210.89.189.25:5432/postgres', encoding='utf-8')
+conn = psycopg2.connect(host='210.89.189.25', port=5432, user='postgres', database='postgres', password=POSTGRES_PASSWORD)
