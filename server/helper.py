@@ -5,7 +5,8 @@ import pandas as pd
 import sys
 from db_connect import conn, engine
 from sentiment.src.sentiment_analysis import SentimentAnalysis
-# from src import keyword
+
+from src import keyword
 def exist_test(table):
     cur = conn.cursor()
     query = f"SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' and table_name={table}"

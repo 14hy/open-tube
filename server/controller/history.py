@@ -1,7 +1,7 @@
-from models.history import History2, db
+from models.history import History, db
 from flask_restplus import Resource, Model, fields, reqparse, inputs, Namespace
 
-api_history = Namespace('history')
+api_history = Namespace('history', description='감성분석 및 키워드 분석을 위한 작업을 추가합니다.')
 
 
 @api_history.route("/")
@@ -18,7 +18,7 @@ class Route(Resource):
 
         args = parser.parse_args(strict=True)
 
-        history = History2(userId=args['userId'], keyword=args['keyword'], sentiment=args['sentiment'],
+        history = History(userId=args['userId'], keyword=args['keyword'], sentiment=args['sentiment'],
                            url=args['url'])
         db.session.add(history)
         db.session.commit()
