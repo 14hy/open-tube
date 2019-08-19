@@ -44,14 +44,22 @@ def make_table(youtube_url):
 
 def get_table_data(table, func_name):
     table = table.lower()
+    sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
     if(func_name == "sentiment"):
         cur = conn.cursor()
         query = f"SELECT root FROM {table}"
         cur.execute(query)
         result = cur.fetchall()
         result = [row[0] for row in result]
-        sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
         temp = sentiment_class.score(result)
+        print(temp)
+    elif(func_name == "slang"):
+        cur = conn.cursor()
+        query = f"SELECT root FROM {table}"
+        cur.execute(query)
+        result = cur.fetchall()
+        result = [row[0] for row in result]
+        temp = sentiment_class.slang(result)
         print(temp)
     elif(func_name == "keyword"):
         cur = conn.cursor()
@@ -61,7 +69,6 @@ def get_table_data(table, func_name):
         result = [row[0] for row in result]
         temp = get_cnt_words(result)
         print(temp)
-        
 
 if __name__ == "__main__":
     if (len(sys.argv) < 3):
