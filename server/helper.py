@@ -41,18 +41,31 @@ def make_table(youtube_url):
     reply_df.to_sql(youtube_key, engine, if_exists='replace')
     # insert data
 
-
-def get_table_data(table, func_name):
-    table = table.lower()
+def get_table_data(youtube_url, func_name):
+    youtube_key = youtube_url.split("?v=")[-1]
+    youtube_key = youtube_key.split("&")[0]
+    table = youtube_key.lower()
     sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
     if(func_name == "sentiment"):
         cur = conn.cursor()
-        query = f"SELECT root FROM {table}"
+        query = f'SELECT root FROM "{table}"'
         cur.execute(query)
         result = cur.fetchall()
         result = [row[0] for row in result]
         temp = sentiment_class.score(result)
         print(temp)
+        query = f'alter table "{table}" add column sentiment varchar'
+        cur.execute(query)
+        conn.commit()
+        i=0
+        for index,row in temp.iterrows():
+            sql = f'update "{table}" set sentiment=\'{row["sentiment"]}\' where index={i}'
+            i+=1
+            cur.execute(sql)
+            conn.commit()
+        sql=f"update history set done=2 where url='{youtube_url}'"
+        cur.execute(sql)
+        conn.commit()
     elif(func_name == "slang"):
         cur = conn.cursor()
         query = f"SELECT root FROM {table}"
@@ -61,6 +74,18 @@ def get_table_data(table, func_name):
         result = [row[0] for row in result]
         temp = sentiment_class.slang(result)
         print(temp)
+        query = f'alter table "{table}" add column slang varchar'
+        cur.execute(query)
+        conn.commit()
+        i=0
+        for index,row in temp.iterrows():
+            sql = f'update "{table}" set slang=\'{row["slang"]}\' where index={i}'
+            i+=1
+            cur.execute(sql)
+            conn.commit()
+        sql=f"update history set done=2 where url='{youtube_url}'"
+        cur.execute(sql)
+        conn.commit()
     elif(func_name == "keyword"):
         cur = conn.cursor()
         query = f"SELECT root FROM {table}"
@@ -69,6 +94,7 @@ def get_table_data(table, func_name):
         result = [row[0] for row in result]
         temp = get_cnt_words(result)
         print(temp)
+
 
 if __name__ == "__main__":
     if (len(sys.argv) < 3):
