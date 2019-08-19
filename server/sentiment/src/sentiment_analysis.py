@@ -79,12 +79,13 @@ class SentimentAnalysis:
         body = buffer.getvalue()
         pred = json.loads(body.decode('utf8'))["outputs"]
         pred = np.squeeze(pred)
-        print(pred)
+        # print(pred)
         for idx, row in enumerate(pred):
             if idx in empty_tokens:
                 pred[idx] = 0.5000
             pred[idx] = round(pred[idx], 2)
         df = pd.DataFrame(pred)
+        df.columns = ["sentiment"]
         return df
 
     def slang(self, X, ban_list=None):
@@ -99,6 +100,7 @@ class SentimentAnalysis:
                     slangs[idx] = 1
                     break
         df = pd.DataFrame(slangs)
+        df.columns = ["slang"]
         return df
 
 
