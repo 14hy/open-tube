@@ -5,7 +5,7 @@ import pycurl
 import pandas as pd
 from io import BytesIO
 import json
-import sentiment.src.preprocess
+import sentiment.src.preprocess as preprocess
 
 
 class SentimentAnalysis:

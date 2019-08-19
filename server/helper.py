@@ -50,7 +50,7 @@ def get_table_data(table, func_name):
         cur.execute(query)
         result = cur.fetchall()
         result = [row[0] for row in result]
-        sentiment_class = SentimentAnalysis("model/word2vec/word2vec.model")
+        sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
         temp = sentiment_class.score(result)
         print(temp)
     elif(func_name == "keyword"):
