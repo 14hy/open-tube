@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:{POSTGRES_PASSWORD}@210.89.189.25:5432/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:{POSTGRES_PASSWORD}@210.89.189.25:5432'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # db 연결
 db = SQLAlchemy(app)
