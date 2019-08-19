@@ -4,8 +4,8 @@ import subprocess
 import pandas as pd
 import sys
 from db_connect import conn, engine
-# from tensorflow.src.SentimentAnalysisKR import SentimentAnalysisKR
-from src import keyword
+from sentiment.src.sentiment_analysis import SentimentAnalysis
+# from src import keyword
 def exist_test(table):
     cur = conn.cursor()
     query = f"SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' and table_name={table}"
@@ -50,7 +50,8 @@ def get_table_data(table, func_name):
         cur.execute(query)
         result = cur.fetchall()
         result = [row[0] for row in result]
-        temp = SentimentAnalysisKR.score(result)
+        sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
+        temp = sentiment_class.score(result)
         print(temp)
     elif(func_name == "keyword"):
         cur = conn.cursor()

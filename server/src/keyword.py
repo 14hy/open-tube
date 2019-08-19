@@ -1,8 +1,10 @@
 import re
 from collections import OrderedDict, Iterable
-from mecab import MeCab
+# from mecab import MeCab
+from konlpy.tag import Okt
 
-mecab = MeCab()
+# mecab = MeCab()
+mecab = Okt()
 
 
 def _prep_text(text, morphs=False):
