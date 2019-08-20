@@ -15,12 +15,12 @@ db = SQLAlchemy(app)
 
 api = Api(app, version="1.0", title="OPEN TUBE", description="OPEN TUBE API")
 
-from controller.reply import extract_reply
 from controller.history import api_history
 from controller.download import api_download
 from controller.get_reply_text import api_reply
+from controller.get_reply_keywords import api_keywords
 
-api.add_namespace(extract_reply, path="/extract")
 api.add_namespace(api_history)
 api.add_namespace(api_download)
 api.add_namespace(api_reply)
+api.add_namespace(api_keywords)

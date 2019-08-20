@@ -2,6 +2,7 @@ from app import db
 from models.download import Download
 from flask_restplus import Resource, Model, fields, reqparse, inputs, Namespace
 from src.download import download_url
+from flask import jsonify
 
 api_download = Namespace('download', description='동영상 다운로드 작업을 추가합니다.')
 
@@ -17,4 +18,4 @@ class Route(Resource):
 
         args = parser.parse_args(strict=True)
 
-        return download_url(vid=args['vid'], uid=args['uid'])
+        return jsonify(download_url(vid=args['vid'], uid=args['uid']))

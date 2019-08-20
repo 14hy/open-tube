@@ -1,5 +1,6 @@
 from models.history import History, db
 from flask_restplus import Resource, Model, fields, reqparse, inputs, Namespace
+from flask import jsonify
 
 api_history = Namespace('history', description='감성분석 및 키워드 분석을 위한 작업을 추가합니다.')
 
@@ -22,5 +23,7 @@ class Route(Resource):
                            url=args['url'])
         db.session.add(history)
         db.session.commit()
-        return 201
+        return jsonify({
+            'status': 'success'
+        }), 201
 
