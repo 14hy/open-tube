@@ -15,6 +15,6 @@ class ExtractReply(Resource):
         sql = f'select * from "{table}"'
         conn = db.session.connection()
         result = conn.execute(f'select * from {vid.lower()}')
-        
+        conn.close()
         keywords = get_cnt_words(result)
         return jsonify(keywords), 201
