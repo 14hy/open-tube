@@ -148,9 +148,9 @@ def _download(vid, stream):
 
 
 def download_url(vid, uid, res='720p', fps=30):
-    """영상을 다운로드 하고 저장된 상태를 리
+    """영상을 다운로드 하고 저장된 상태를 리턴
     """
-    q = Download.query.filter_by(vid=vid).first()
+    q = Download.query.filter_by(vid=vid, uid=uid).first()
     if q is not None:
         if q.status == 'processing':
             return {
