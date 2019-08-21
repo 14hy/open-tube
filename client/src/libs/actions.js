@@ -29,6 +29,25 @@ export const loadXhr = actionCreator((state, url, callback) => {
 	return state
 })
 
+export const postXhr = (url, data) => new Promise(resolve => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`POST`, url)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			}
+		}
+	})
+	xhr.send(data)
+})
+
 export const xhrFirebase = actionCreator((state, path, callback) => {
 	const xhr = new XMLHttpRequest()
 
