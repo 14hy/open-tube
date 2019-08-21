@@ -16,16 +16,57 @@ export class ModalReport extends HTMLElement {
 		this.date = ``
 		this.viewCount = ``
 		this.likeCount = ``
+
+		this.done = false
 	}
 
 	connectedCallback() {
+		const tag = document.createElement(`script`)
+		tag.src = `https://www.youtube.com/iframe_api`
+		const firstScriptTag = document.getElementsByTagName(`script`)[0]
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
+		window.onYouTubeIframeAPIReady = () => {
+			window.player = new YT.Player(`player`, {
+				height: `250`,
+				width: `300`,
+				videoId: `M7lc1UVf-VE`,
+				events: {
+					'onReady': this.onPlayerReady,
+					'onStateChange': this.onPlayerStateChange,
+				},
+				playerVars: {
+					fs: 0,
+					modestbranding: 1,
+					rel: 0,
+					showinfo: 0,
+				},
+			})
+		}
+
 		render(this.render(), this)
+	}
+
+	onPlayerReady(event) {
+		event.target.stopVideo()
+	}
+
+	onPlayerStateChange(event) {
+		if (event.data == YT.PlayerState.PLAYING && !this.done) {
+			setTimeout(this.stopVideo, 6000)
+			this.done = true
+		}
+	}
+
+	stopVideo() {
+		window.player.stopVideo()
 	}
     
 	show(url, vid) {
 		this.url = url
 		this.style.transform = `scale(1)`
 		this.getYoutubeData(vid)
+		window.player.cueVideoById(vid)
 		render(this.render(), this)
 	}
 
@@ -53,14 +94,18 @@ export class ModalReport extends HTMLElement {
 		this.desc = text.match(/"description":{"runs":\[{"text":"(.*?)"}/)[1]
 		this.likeCount = text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1]
 		this.getFaceData()
+		
 		render(this.render(), this)			
 	}
 
 	get videoBox() {
 		return html `
 		<span class="video-box">
-			<h2 class="video-title"><i class="fi-play-video size-72"></i> Info Video</h2>
-			<iframe width="300" height="250" .src=${this.url} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<h2 class="video-title"><i class="fi-play-video size-72"></i> Video Info</h2>
+			<!-- <iframe width="300" height="250" .src=${this.url} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+			<div class="player-wrap">
+				<div id="player"></div>
+			</div>			
 			<h2 class="video-desc">Information</h2>
 			<div class="video-desc">
 				<span class="desc-title">Title:</span>
@@ -124,7 +169,9 @@ export class ModalReport extends HTMLElement {
 		return html `
 		<span class="face-analysis-box">
 			<h2 class="title"><i class="fi-social-myspace size-72"></i> Face Analysis</h2>
-			<h3 class="title"><i class="fi-photo size-72"></i> All People <span class="face-img-count"></span></h3>
+			<h3 class="title"><i class="fi-photo size-72"></i> All Person Images <span class="face-img-count"></span></h3>
+			<div class="face-content"></div>
+			<h3 class="title"><i class="fi-photo size-72"></i> Images by Time <span class="face-img-count"></span></h3>
 			<div class="face-content"></div>
 		</span>
 		`

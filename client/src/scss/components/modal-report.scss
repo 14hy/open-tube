@@ -86,7 +86,9 @@ modal-report {
                 box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
                 transition: box-shadow 200ms ease;
                 animation: show 100ms ease ;
-                overflow: hidden;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                max-height: calc(90vh - 150px);
                 margin-bottom: 20px;
 
                 .video-title {
@@ -154,7 +156,7 @@ modal-report {
                         margin-right: 10px;
 
                         &.title {
-                            width: 220px;
+                            width: 210px;
                         }
 
                         &.desc {
@@ -172,12 +174,15 @@ modal-report {
                 margin-left: 15px;
                 margin-right: 15px;
                 margin-top: 30px;
-                min-height: calc(90vh - 150px);
+                min-width: 400px;
+                min-height: calc(90vh - 150px);            
                 height: auto;
                 box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
                 transition: box-shadow 200ms ease;
                 animation: show 100ms ease;
-                overflow: hidden;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                max-height: calc(90vh - 150px);
                 margin-bottom: 20px;
 
                 & > .title {
@@ -210,12 +215,11 @@ modal-report {
                 }
 
                 .face-content {
-                    height: 560px;
-                    overflow: scroll;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
                     align-items: center;
+                    min-height: 160px;
 
                     .face-img {
                         margin: 10px;
