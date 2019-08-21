@@ -17,4 +17,4 @@ class ExtractReply(Resource):
         result = conn.execute(f'select * from {vid.lower()}')
         conn.close()
         keywords = get_cnt_words(result)
-        return jsonify(keywords), 201
+        return keywords
