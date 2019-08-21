@@ -23,7 +23,5 @@ class Route(Resource):
                            url=args['url'])
         db.session.add(history)
         db.session.commit()
-        return jsonify({
-            'status': 'success'
-        }), 201
+        return {'status': 'success'}
 
