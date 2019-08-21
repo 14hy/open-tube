@@ -49,6 +49,25 @@ export const xhrFirebase = actionCreator((state, path, callback) => {
 	return state
 })
 
+export const xhrCorsServer = path => new Promise(resolve => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`GET`, `https://cors-servers.herokuapp.com/${path}`)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			}
+		}
+	})
+	xhr.send()
+})
+
 export const logout = actionCreator(state => {
 	firebase.auth().signOut().then(() => {
 		state.isLogin = false

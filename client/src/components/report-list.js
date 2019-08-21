@@ -21,7 +21,7 @@ export class ReportList extends HTMLElement {
 				const vid = new URL(target.querySelector(`.report-desc a`).textContent).searchParams.get(`v`)
 				if(store.getState().isLogin) {
 					// autoplay=0&rel=0&controls=0&showinfo=0&cc_load_policy=0&iv_load_policy=3&
-					modal.show(`https://www.youtube.com/embed/${vid}?autoplay=0&rel=0&showinfo=0&cc_load_policy=0&iv_load_policy=3&modestbranding=1`)
+					modal.show(`https://www.youtube.com/embed/${vid}?autoplay=0&rel=0&showinfo=0&cc_load_policy=0&iv_load_policy=3&modestbranding=1`, vid)
 					return
 				}
 
