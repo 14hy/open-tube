@@ -14,8 +14,8 @@ def _prep_text(text, morphs=False):
     3. 한글, 영어 제외 제거
     4. 형태소 분석
 
-    text: string.
-    morphs: bool, morhphs?
+    :param text: string.
+    :param morphs: bool, morhphs?
 
     :return: string.
     """
@@ -37,9 +37,9 @@ def _prep_text(text, morphs=False):
 def get_cnt_words(replies: Iterable, prep_fn=_prep_text) -> dict:
     """
     단어 빈도를 세줍니다.
-    replies: string iterator, 댓글들
+    :param replies: string iterator, 댓글들
 
-    prep_fn: 전처리 함수
+    :param prep_fn: 전처리 함수
 
     :return: dict, {string: int}
     """
