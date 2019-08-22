@@ -1,6 +1,7 @@
 import { html, render } from 'lit-html'
 import i18next from 'i18next'
 import randomcolor from 'randomcolor'
+import WordCloud from 'wordcloud'
 
 import { xhrCorsServer, postXhr, getXhr } from '../libs/actions.js'
 import store from '../libs/store.js'
@@ -80,6 +81,8 @@ export class ModalReport extends HTMLElement {
 
 		this.crateCommentBox(vid)
 		render(this.render(), this)
+
+		this.createWordChart(vid)
 	}
 
 	hide() {
@@ -410,6 +413,28 @@ export class ModalReport extends HTMLElement {
 		`
 	}
 
+	async createWordChart(vid) {
+		let res = await getXhr(`/api_keywords/${vid}`)
+
+		res = JSON.parse(res)
+		res = Object.entries(res)
+
+		res.forEach(each => {
+			each[1] *= 20
+		})
+
+		WordCloud(document.getElementById(`word_cloud`), { list: res } )
+	}
+
+	get wordChart() {		
+		return html`
+		<span class="word-chart-box">
+			<h2 class="title"><i class="fi-graph-trend size-72"></i> Keyword Analysis</span></h2>
+			<canvas id="word_cloud" class="word_cloud" width="1280" height="800"></canvas>
+		</span>
+		`
+	}
+
 	render() {
 		return html`
         <div class="modal-report"> 
@@ -424,6 +449,8 @@ export class ModalReport extends HTMLElement {
 				${this.faceAnalysisBox}
 
 				${this.commentBox}
+
+				${this.wordChart}
 
 			</div>
 			<div class="modal-footer">© 2019 Open-Tube, Inc.</div>

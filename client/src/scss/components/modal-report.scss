@@ -427,7 +427,55 @@ modal-report {
                         right: 20px;
                     }
                 }
-            } 
+            }
+
+            .word-chart-box {
+                display: inline-block;
+                width: calc(100% - 60px);
+                border-radius: 3px;
+                background-color: #FFFFFF;
+                margin-left: 15px;
+                margin-right: 15px;
+                margin-top: 30px;
+                min-width: 400px;
+                min-height: calc(90vh - 150px);            
+                height: auto;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
+                transition: box-shadow 200ms ease;
+                animation: show 100ms ease;
+                overflow-x: hidden;
+                overflow-y: hidden;
+                max-height: calc(90vh - 150px);
+                margin-bottom: 20px;
+                position: relative;
+
+                & > .title {
+                    color: white;
+                    height: 50px;
+                    background-color: #FF845E;
+                    padding-left: 10px;
+                    margin-left: 0;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    font-size: 18px;
+
+                    i {
+                        vertical-align: sub;
+                        margin-right: 5px;
+
+                        &:before {
+                            font-size: 30px;
+                        }
+                    }                  
+                }
+
+                canvas {
+                    display: block;
+                    margin: 0 auto;
+                    width: auto;
+                    height: calc(100% - 50px);
+                }
+            }
         }    
         
         .modal-footer {            
