@@ -49,19 +49,18 @@ def get_table_data(youtube_url, func_name):
     sentiment_class = SentimentAnalysis("sentiment/model/word2vec/word2vec.model","sentiment/model/slang/slang_dict.txt")
     if(func_name == "sentiment"):
         cur = conn.cursor()
-        query = f'SELECT root FROM "{table}"'
+        query = f'SELECT root,index FROM "{table}"'
         cur.execute(query)
-        result = cur.fetchall()
-        result = [row[0] for row in result]
-        temp = sentiment_class.score(result)
+        results = cur.fetchall()
+        result = [row[0] for row in results]
+        index = [row[1] for row in results]
+        temp = sentiment_class.score(index,result)
         print(temp)
         query = f'alter table "{table}" add column sentiment varchar'
         cur.execute(query)
         conn.commit()
-        i=0
         for index,row in temp.iterrows():
-            sql = f'update "{table}" set sentiment=\'{row["sentiment"]}\' where index={i}'
-            i+=1
+            sql = f'update "{table}" set sentiment=\'{row["sentiment"]}\' where index={row["index"]}'
             cur.execute(sql)
             conn.commit()
         sql=f"update history set done=2 where url='{youtube_url}'"
@@ -69,19 +68,18 @@ def get_table_data(youtube_url, func_name):
         conn.commit()
     elif(func_name == "slang"):
         cur = conn.cursor()
-        query = f"SELECT root FROM {table}"
+        query = f'SELECT root,index FROM "{table}"'
         cur.execute(query)
-        result = cur.fetchall()
-        result = [row[0] for row in result]
-        temp = sentiment_class.slang(result)
+        results = cur.fetchall()
+        result = [row[0] for row in results]
+        index = [row[1] for row in results]
+        temp = sentiment_class.slang(index,result)
         print(temp)
         query = f'alter table "{table}" add column slang varchar'
         cur.execute(query)
         conn.commit()
-        i=0
         for index,row in temp.iterrows():
-            sql = f'update "{table}" set slang=\'{row["slang"]}\' where index={i}'
-            i+=1
+            sql = f'update "{table}" set slang=\'{row["slang"]}\' where index={row["index"]}'
             cur.execute(sql)
             conn.commit()
         sql=f"update history set done=2 where url='{youtube_url}'"
