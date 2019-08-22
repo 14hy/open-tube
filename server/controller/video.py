@@ -97,6 +97,9 @@ class Route(Resource):
             v = Video(vid=vid, uid=uid, status='wait')
             db.session.add(v)
             db.session.commit()
+        elif v.thumbnails_path is None:
+            v.status = 'processing'
+            db.session.commit()
             Process(target=make_thumbnail, kwargs={"vid": vid, "uid": uid,
                                                    "save_path": f"/mnt/master/thumbnails",
                                                    "grid": (height, width)}).start()
@@ -113,7 +116,6 @@ class Route(Resource):
 
         except:
             return {
-                'status': v.status
+                'status': 'something is wrong. error'
             }
 
-        return {'status': 'error'}
