@@ -23,11 +23,11 @@ def extract_tag_from_table(vid):
 
     conn = db.session.connection()
     try:
-        result = conn.execute(f'select * from {vid.lower()}')
+        result = conn.execute(f'select * from "{vid.lower()}"')
     except:
         db.session.remove()
         db.session.rollback()
-        result = conn.execute(f'select * from {vid.lower()}')
+        result = conn.execute(f'select * from "{vid.lower()}"')
 
     tags_dict = {}
 
