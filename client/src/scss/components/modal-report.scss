@@ -311,7 +311,7 @@ modal-report {
                 transition: box-shadow 200ms ease;
                 animation: show 100ms ease;
                 overflow-x: hidden;
-                overflow-y: scroll;
+                overflow-y: hidden;
                 max-height: calc(90vh - 150px);
                 margin-bottom: 20px;
                 position: relative;
@@ -343,6 +343,11 @@ modal-report {
                         color: #FFFACF;
                         margin-right: 10px;
                     }                    
+                }
+
+                .content-wrap {
+                    height: calc(100% - 50px);
+                    overflow-y: scroll;
                 }
 
                 .content {
