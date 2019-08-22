@@ -1,8 +1,10 @@
 import re
 from collections import OrderedDict, Iterable
-from mecab import MeCab
+# from mecab import MeCab
+# from konlpy.tag import Okt
 
-mecab = MeCab()
+# mecab = MeCab()
+# mecab = Okt()
 
 
 def _prep_text(text, morphs=False):
@@ -25,17 +27,18 @@ def _prep_text(text, morphs=False):
     text = re.sub(replace_by_space, ' ', text)
     text = re.sub(remove_except, '', text)
     text = text.split()
-    if morphs:
-        text = ' '.join(text)
-        text = mecab.morphs(text)
+    # if morphs:
+    #     text = ' '.join(text)
+    #     text = mecab.morphs(text)
 
     return ' '.join(text)
 
 
-def get_cnt_words(replies: iter, prep_fn=_prep_text) -> dict:
+def get_cnt_words(replies: Iterable, prep_fn=_prep_text) -> dict:
     """
     단어 빈도를 세줍니다.
     replies: string iterator, 댓글들
+
     prep_fn: 전처리 함수
 
     :return: dict, {string: int}
@@ -46,6 +49,8 @@ def get_cnt_words(replies: iter, prep_fn=_prep_text) -> dict:
     cnt_words = OrderedDict()
 
     for reply in replies:
+        if not isinstance(reply, str):
+            reply = reply[1]
         reply = prep_fn(reply)
         for word in reply.split():
             cnt_words[word] = cnt_words.get(word, 0) + 1
