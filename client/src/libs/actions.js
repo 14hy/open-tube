@@ -29,6 +29,25 @@ export const loadXhr = actionCreator((state, url, callback) => {
 	return state
 })
 
+export const getXhr = url => new Promise(resolve => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`GET`, `http://101.101.167.71:32666${url}`)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			}
+		}
+	})
+	xhr.send()
+})
+
 export const postXhr = (url, data) => new Promise(resolve => {
 	const xhr = new XMLHttpRequest()
 
@@ -36,7 +55,7 @@ export const postXhr = (url, data) => new Promise(resolve => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`POST`, url)
+	xhr.open(`POST`, `http://101.101.167.71:32666${url}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				

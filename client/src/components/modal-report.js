@@ -2,7 +2,7 @@ import { html, render } from 'lit-html'
 import i18next from 'i18next'
 import randomcolor from 'randomcolor'
 
-import { xhrCorsServer, postXhr } from '../libs/actions.js'
+import { xhrCorsServer, postXhr, getXhr } from '../libs/actions.js'
 import store from '../libs/store.js'
 
 export class ModalReport extends HTMLElement {
@@ -69,6 +69,8 @@ export class ModalReport extends HTMLElement {
 		this.getYoutubeData(vid)
 		window.player.loadVideoById(vid)
 		window.setTimeout(() => window.player.pauseVideo(), 2000)
+
+		this.crateCommentBox(vid)
 		render(this.render(), this)
 	}
 
@@ -155,7 +157,7 @@ export class ModalReport extends HTMLElement {
 		formData.append(`uid`, uid)
 		formData.append(`vid`, this.vid)
 
-		const res = await postXhr(`http://101.101.167.71:32666/download/`, formData)
+		const res = await postXhr(`/download/`, formData)
 
 		const status = JSON.parse(res)[`status`]
 
@@ -318,17 +320,33 @@ export class ModalReport extends HTMLElement {
 		`
 	}
 
+	comment(obj) {
+		return html `
+		<div class="content">
+			<h3 class="author">${obj.author}</h3>
+			<p class="comment">${obj.root}</p>
+			<div class="like-count"><i class="fi-like size-72"></i> ${obj.like}</div>
+			<div class="sentiment-value"><i class="fi-contrast size-72"></i> ${obj.sentiment}</div>
+			<div class="slang"><i class="fi-skull size-72"></i> ${obj.slang === 1 ? `TRUE` : `FALSE`}</div>
+		</div>
+		`
+	}
+
+	async crateCommentBox(vid) {
+		let res = await getXhr(`/api_reply/${vid}`)
+
+		res = JSON.parse(res)
+
+		render(html `
+		${res.map(comment => this.comment(comment))}
+		`, this.querySelector(`.content-wrap`))
+	}
+
 	get commentBox() {		
 		return html `
 		<span class="comment-box">
 			<h2 class="title"><i class="fi-comment-quotes size-72"></i> Comment Analysis <span class="comment-count"></span></h2>
-			<div class="content">
-				<h3 class="author">Author</h3>
-				<p class="comment">TEXT</p>
-				<div class="like-count"><i class="fi-like size-72"></i> 777</div>
-				<div class="sentiment-value"><i class="fi-contrast size-72"></i> 123</div>
-				<div class="slang"><i class="fi-skull size-72"></i> TRUE</div>
-			</div>
+			<div class="content-wrap"></div>
 		</span>
 		`
 	}

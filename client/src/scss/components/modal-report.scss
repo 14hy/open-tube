@@ -348,15 +348,25 @@ modal-report {
                 .content {
                     padding-bottom: 20px;
                     border-bottom: 1px solid #6666;
+                    position: relative;
+                    display: grid;
+                    grid-template-areas: 
+                        "author sen slang" 
+                        "text sen slang" 
+                        "like sen slang";
+                    grid-template-columns: auto 180px 200px;
+                    align-items: center;
 
                     h3 {      
+                        grid-area: author;
                         color: #818586;                  
                         padding-left: 15px;
                         padding-top: 20px;
                         padding-bottom: 20px;
                     }
 
-                    .comment {                        
+                    .comment {          
+                        grid-area: text;              
                         color: #3D464A;
                         padding-left: 15px;                        
                     }
@@ -365,12 +375,37 @@ modal-report {
                         display: inline-block;
                         color: #988E7A;
                         padding-top: 10px;
-                        padding-left: 15px;                        
+                        padding-left: 15px;
 
                         i {
                             font-size: 20px;
                         }
-                    }                    
+                    }
+                    
+                    .sentiment-value, .slang {
+                        font-size: 40px;
+
+                        i {
+                            vertical-align: -15%;
+
+                            &::before {
+                                font-size: 50px;
+                            }
+                        }
+                    }
+
+                    .like-count {
+                        grid-area: like;
+                    }
+
+                    .sentiment-value {
+                        grid-area: sen;
+                    }
+
+                    .slang {
+                        grid-area: slang;
+                        right: 20px;
+                    }
                 }
             } 
         }    
