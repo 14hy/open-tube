@@ -373,6 +373,23 @@ def decode_y2(y_pred,
 
     return y_pred_decoded
 
+def _greedy_nms2(predictions, iou_threshold=0.45, coords='minmax'):	
+    '''	
+    The same greedy non-maximum suppression algorithm as above, but slightly modified for use as an internal	
+    function in `decode_y2()`.	
+    '''	
+    boxes_left = np.copy(predictions)	
+    maxima = [] # This is where we store the boxes that make it through the non-maximum suppression	
+    while boxes_left.shape[0] > 0: # While there are still boxes left to compare...	
+        maximum_index = np.argmax(boxes_left[:,1]) # ...get the index of the next box with the highest confidence...	
+        maximum_box = np.copy(boxes_left[maximum_index]) # ...copy that box and...	
+        maxima.append(maximum_box) # ...append it to `maxima` because we'll definitely keep it	
+        boxes_left = np.delete(boxes_left, maximum_index, axis=0) # Now remove the maximum box from `boxes_left`	
+        if boxes_left.shape[0] == 0: break # If there are no boxes left after this step, break. Otherwise...	
+        similarities = iou(boxes_left[:,2:], maximum_box[2:], coords=coords) # ...compare (IoU) the other left over boxes to the maximum box...	
+        boxes_left = boxes_left[similarities <= iou_threshold] # ...so that we can remove the ones that overlap too much with the maximum box	
+    return np.array(maxima)
+
 if __name__ == '__main__':
     # download_url('https://www.youtube.com/watch?v=Vp3fWnf1DoM')
     pass
