@@ -65,7 +65,7 @@ def _get_anoymous_features(vid):
     print(f'file_path: {file_path}')
     for idx_dataset, imgs in enumerate(dataset):
         preds = infer_ssd(imgs)['predicts'].numpy()
-        preds_decode = decode_y2(preds, 0.8, _IOU, img_height=720, img_width=1280, normalize_coords=True)
+        preds_decode = decode_y2(preds, 0.8)
 
         for idx_img, img in enumerate(imgs.numpy()):
             time += 1
@@ -83,8 +83,12 @@ def _get_anoymous_features(vid):
                 for face_id, feature in FACES.items():
                     dist = l1_distance(feature, pred_similarity.numpy())
                     if dist < _DIST_THRESHOLD:
+                        xmin, xmax, ymin, ymax = preds_decode[idx_img][idx_face][2:].tolist()
+                        width = abs(xmax - xmin)
+                        height = abs(ymax - ymin)
+
                         time_line[face_id].append({
-                            time: preds_decode[idx_img][idx_face][2:].tolist()
+                            time: [xmin * 1280, ymax * 720, width * 1280, height * 720]
                         })
                         found = True
                 if not found:
@@ -98,8 +102,13 @@ def _get_anoymous_features(vid):
                     cv2.imwrite(f'{face_dir}/{uid}/{vid}/{unique_face_idx}.jpg',
                                 cv2.cvtColor(faces[idx_face], cv2.COLOR_RGB2BGR))
                     FACES[unique_face_idx] = pred_similarity.numpy()
+
+                    xmin, xmax, ymin, ymax = preds_decode[idx_img][idx_face][2:].tolist()
+                    width = abs(xmax - xmin)
+                    height = abs(ymax - ymin)
+
                     time_line[unique_face_idx] = [{
-                        time: preds_decode[idx_img][idx_face][2:].tolist()
+                        time: [xmin * 1280, ymax * 720, width * 1280, height * 720]
                     }]
                     unique_face_idx += 1
 
