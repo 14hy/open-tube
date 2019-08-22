@@ -60,7 +60,7 @@ export const main = new class {
 		}
 
 		if (canMove()) {
-			this.renderPage(`page-${pathName}`)			
+			this.renderPage(`page-${pathName}`, `/${pathName}`)			
 			return
 		}
 		moveBasedLogin(`reports`, `login`)
@@ -90,7 +90,7 @@ export const main = new class {
 		root.appendChild(loading)
 	}
 
-	renderPage(pageName, path) {		
+	renderPage(pageName, path) {
 		this.emptyDOM()
 		const pageElement = document.createElement(pageName)
 		document.querySelector(`main`).appendChild(pageElement)
@@ -133,7 +133,6 @@ export const main = new class {
 					state.isLogin = false
 					state.userInfo = {}
 					store.setState(state)
-					main.connectLoginNoLoad()
 					resolve()
 				}
 			}, error => {

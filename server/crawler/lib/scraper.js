@@ -179,7 +179,6 @@ module.exports = {
                             },
                             comments: res
                         });
-
                     }).catch((reason) => {
                         console.error(reason);
                         page.close();

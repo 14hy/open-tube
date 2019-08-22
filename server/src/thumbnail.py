@@ -39,6 +39,7 @@ def make_thumbnail(vid, uid, save_path, grid=(4, 1)):
         }
     file_path = d.file_path
 
+
     vc = cv2.VideoCapture(file_path)
     width = vc.get(CV_CAP_PROP_FRAME_WIDTH) * grid[1] * 0.01
     height = vc.get(CV_CAP_PROP_FRAME_HEIGHT) * grid[0] * 0.01

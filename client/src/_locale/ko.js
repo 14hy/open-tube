@@ -14,4 +14,8 @@ export default {
 	MODAL_REQUEST_REPORT_SUBMIT: `보내기`,
 	MODAL_REQUEST_LABEL_URL: `유튜브 영상 URL`,
 	MODAL_REQUEST_LABEL_ANALYSIS: `분석 요청 목록`,
+
+	/* modal-report */
+	MODAL_REPORT_FACE_STATUS_WAIT: `분석 대기 중...`,
+	MODAL_REPORT_FACE_STATUS_PROCESSING: `분석 중...`,
 }

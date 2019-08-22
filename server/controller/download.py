@@ -1,4 +1,3 @@
-from app import db
 from models.download import Download
 from flask_restplus import Resource, Model, fields, reqparse, inputs, Namespace
 from src.download import download_url
@@ -22,14 +21,12 @@ class Route(Resource):
         args = parser.parse_args(strict=True)
         vid = args['vid']
         uid = args['uid']
-
         try:
             q = Download.query.filter_by(vid=vid, uid=uid).first()
         except:
             db.session.remove()
             db.session.rollback()
             q = Download.query.filter_by(vid=vid, uid=uid).first()
-
         if q is not None:
             if q.status == 'processing':
                 return {
