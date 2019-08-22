@@ -36,7 +36,7 @@ export const getXhr = url => new Promise((resolve, reject) => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`GET`, `http://101.101.167.71:32666${url}`)
+	xhr.open(`GET`, `https://open-tube-api.kro.kr:32666${url}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
@@ -57,7 +57,7 @@ export const postXhr = (url, data) => new Promise((resolve, reject) => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`POST`, `http://101.101.167.71:32666${url}`)
+	xhr.open(`POST`, `https://open-tube-api.kro.kr:32666${url}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
