@@ -44,7 +44,6 @@ if (argv.channel) {
     comments(url).then((res) => {
         var temp = JSON.stringify(res['comments']);
         fs.writeFile( `/root/open-tube/server/json/${fileName}.json`, temp, "utf8",function(res){});
-	fs.close();
         close();
     }).catch((err) => {
         console.error(err);
