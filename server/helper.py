@@ -27,7 +27,7 @@ def extract_save_reply(youtube_url):
     print(__cmd)
     try:
         subprocess.call(__cmd, shell=True)
-        subprocess.call(f"mv {youtube_key}.json json/", shell=True)
+#        subprocess.call(f"mv {youtube_key}.json json/", shell=True)
         return 1
     except Exception as e:
         print(e)

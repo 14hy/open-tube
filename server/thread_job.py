@@ -37,12 +37,16 @@ class test:
         cur.execute(sql2)
         data2 = cur.fetchall()
         slang_data = [i[0] for i in data2]
-        pool = Pool(processes=num) # 4개의 프로세스를 사용합니다.
-        pool.map(self.sentiment,sen_data)# get_contetn 함수를 넣어줍시다.
-        # pool.map(self.slang,slang_data)# get_contetn 함수를 넣어줍시다.
+#        pool = Pool(processes=num) # 4개의 프로세스를 사용합니다.
+#        pool.map(self.sentiment,sen_data)# get_contetn 함수를 넣어줍시다.
+#        pool.map(self.slang,slang_data)# get_contetn 함수를 넣어줍시다.
+#        print('start')
+#        exit()
         for url in sen_data:
+            self.sentiment(url)
             self.serving_sentiment(url)
         for url in slang_data:
+            self.slang(url)
             self.serving_slang(url)
 
 
