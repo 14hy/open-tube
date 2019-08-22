@@ -333,8 +333,8 @@ export class ModalReport extends HTMLElement {
 			<h3 class="author">${obj.author}</h3>
 			<p class="comment">${obj.root}</p>
 			<div class="like-count"><i class="fi-like size-72"></i> ${obj.like}</div>
-			<div class="sentiment-value"><i class="fi-contrast size-72"></i> ${obj.sentiment}</div>
-			<div class="slang"><i class="fi-skull size-72"></i> ${obj.slang === 1 ? `TRUE` : `FALSE`}</div>
+			<div class="sentiment-value" style="color: ${obj.sentiment >= 0.5 ? `#56B37F` : `#E36A5E`}"><i class="fi-contrast size-72"></i> ${obj.sentiment}</div>
+			<div class="slang" style="color: ${obj.slang === `1.0` ? `#E36A5E` : `#988E7A`}"><i class="fi-skull size-72"></i> ${obj.slang === `1.0` ? `True` : `False`}</div>
 		</div>
 		`
 	}
