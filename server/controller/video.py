@@ -20,8 +20,13 @@ class Route(Resource):
         args = parser.parse_args(strict=True)
         vid = args['vid']
         uid = args['uid']
+        try:
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
 
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         if v is None:
 
             return {
@@ -58,15 +63,26 @@ class Route(Resource):
         base_url = 'https://www.youtube.com/watch?v='
         vid = args['vid']
         uid = args['uid']
+        try:
+            h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
 
-        h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
         if h is None:
             return {
                 'status': 'reply data in history is not ready'
             }
 
         else:
-            d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
+            try:
+                d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
+            except:
+                db.session.remove()
+                db.session.rollback()
+                d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
+
             if d is None:
                 print("downloading start")
                 download_url(vid, uid)
@@ -81,7 +97,12 @@ class Route(Resource):
                 return {'status': 'wait'}
 
             else:
-                v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+                try:
+                    v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+                except:
+                    db.session.remove()
+                    db.session.rollback()
+                    v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
                 if v is None:
                     v = Video(vid=vid, uid=uid, status='wait')
                     db.session.add(v)
@@ -128,7 +149,12 @@ class Route(Resource):
         height = args['height']
         width = args['width']
 
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        try:
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         if v is None:
             return {
                 'status': 'failed',
@@ -162,21 +188,16 @@ class Route(Resource):
         height = args['height']
         width = args['width']
 
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        try:
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         if v is None:
             v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
             db.session.add(v)
             db.session.commit()
-        elif v.thumbnails_path is None:
-            v.status = 'processing'
-            db.session.commit()
-            Process(target=make_thumbnail, kwargs={"vid": vid, "uid": uid,
-                                                   "save_path": f"/mnt/master/thumbnails",
-                                                   "grid": (height, width)}).start()
-            return {
-                'status': v.status
-            }
-
         try:
             path = v.thumbnails_path[f'{height}{width}']
             return {
@@ -185,6 +206,12 @@ class Route(Resource):
             }
 
         except:
+            if v.status != 'processing':
+                v.status = 'processing'
+                db.session.commit()
+                Process(target=make_thumbnail, kwargs={"vid": vid, "uid": uid,
+                                                       "save_path": f"/mnt/master/thumbnails",
+                                                       "grid": (height, width)}).start()
             return {
-                'status': 'something is wrong. error'
+                'status': v.status
             }
