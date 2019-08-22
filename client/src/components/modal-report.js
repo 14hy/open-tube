@@ -66,9 +66,10 @@ export class ModalReport extends HTMLElement {
 	}
 
 	init() {
-		render(html``, this.querySelector(`.face-content`))
+		render(html`${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))
 		render(html``, this.querySelector(`.content-wrap`))		
 		this.querySelector(`.word-chart-box`).style.display = `inline-block`
+		this.querySelector(`.comment-box`).style.display = `inline-block`
 	}
     
 	show(url, vid) {
@@ -167,38 +168,40 @@ export class ModalReport extends HTMLElement {
 		const uid = store.getState().userInfo.uid
 		const formData = new FormData()
 		formData.append(`uid`, uid)
-		formData.append(`vid`, this.vid)
+		formData.append(`vid`, this.vid)		
 
-		const res = await postXhr(`/download/`, formData)
+		try {
+			const res = await postXhr(`/download/`, formData)
 
-		const status = JSON.parse(res)[`status`]
+			const status = JSON.parse(res)[`status`]
+			const isProcessing = () => status === `wait` || status === `processing`
 
-		if (status === `wait`) {
-			render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_WAIT`)}`, this.querySelector(`.face-content`))	
-		} else if (status === `processing`)	 {
+			if (isProcessing()) {
+				render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))	
+			} else if (status === `complete`) {
+				const data = Object.values(JSON.parse(JSON.parse(res)[`time_line`]))
+				const imgCount = data.length		
+
+				render(html `
+					${imgCount}개의 이미지가 검색됨
+				`, this.querySelector(`.face-img-count`))
+				
+				render(html `
+					${data.map((img, index) => html`
+					<img
+						@click=${this.mouseclickFaceImg(index, data)}
+						@mouseenter=${this.mouseenterFaceImg(index, data)}
+						@mouseleave=${this.mouseleaveFaceImg}
+						class="face-img" 
+						style="border: 5px solid ${randomcolor({luminosity: `dark`})}" 
+						src="https://open-tube.kro.kr/img-face/${uid}/${this.vid}/${index}.jpg"/>
+					`)}
+				`, this.querySelector(`.face-content`))
+			}
+
+		} catch(err) {
 			render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))	
-		} else if (status === `complete`) {
-			const data = Object.values(JSON.parse(JSON.parse(res)[`time_line`]))
-			const imgCount = data.length		
-
-			render(html `
-				${imgCount}개의 이미지가 검색됨
-			`, this.querySelector(`.face-img-count`))
-			
-			render(html `
-				${data.map((img, index) => html`
-				<img
-					@click=${this.mouseclickFaceImg(index, data)}
-					@mouseenter=${this.mouseenterFaceImg(index, data)}
-					@mouseleave=${this.mouseleaveFaceImg}
-					class="face-img" 
-					style="border: 5px solid ${randomcolor({luminosity: `dark`})}" 
-					src="https://open-tube.kro.kr/img-face/${uid}/${this.vid}/${index}.jpg"/>
-				`)}
-			`, this.querySelector(`.face-content`))
-		} else {
-			render(html `SERVER ERROR`, this.querySelector(`.face-content`))
-		}
+		}		
 	}	
 
 	mouseclickFaceImg(index, data) {
@@ -345,19 +348,23 @@ export class ModalReport extends HTMLElement {
 	}
 
 	async crateCommentBox(vid) {
-		let res = await getXhr(`/api_reply/${vid}`)
+		try {
+			let res = await getXhr(`/api_reply/${vid}`)
 
-		res = JSON.parse(res)
-
-		this.comments = res
-
-		render(html `
-		${res.length}개의 댓글이 검색됨
-		`, this.querySelector(`.comment-count`))
-
-		render(html `
-		${res.map(comment => this.comment(comment))}
-		`, this.querySelector(`.content-wrap`))
+			res = JSON.parse(res)
+	
+			this.comments = res
+	
+			render(html `
+			${res.length}개의 댓글이 검색됨
+			`, this.querySelector(`.comment-count`))
+	
+			render(html `
+			${res.map(comment => this.comment(comment))}
+			`, this.querySelector(`.content-wrap`))
+		} catch(err) {
+			this.querySelector(`.comment-box`).style.display = `none`
+		}		
 	}
 
 	clickAlignComment(align = `index`) {

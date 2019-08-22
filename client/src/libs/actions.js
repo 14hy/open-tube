@@ -50,7 +50,7 @@ export const getXhr = url => new Promise((resolve, reject) => {
 	xhr.send()
 })
 
-export const postXhr = (url, data) => new Promise(resolve => {
+export const postXhr = (url, data) => new Promise((resolve, reject) => {
 	const xhr = new XMLHttpRequest()
 
 	if(!xhr) {
@@ -63,6 +63,8 @@ export const postXhr = (url, data) => new Promise(resolve => {
 		if (xhr.readyState === xhr.DONE) {				
 			if (xhr.status === 200 || xhr.status === 201) {
 				resolve(xhr.responseText)
+			} else {
+				reject(new Error(`500 server error`))
 			}
 		}
 	})
