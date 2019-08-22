@@ -64,7 +64,6 @@ class Route(Resource):
         base_url = 'https://www.youtube.com/watch?v='
         vid = args['vid']
         uid = args['uid']
-<<<<<<< HEAD
         try:
             h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
         except:
@@ -72,17 +71,12 @@ class Route(Resource):
             db.session.rollback()
             h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
 
-=======
-
-        h: History = History.query.filter_by(url=f'{base_url}{vid}', userId=uid).first()
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
         if h is None:
             return {
                 'status': 'reply data in history is not ready'
             }
 
         else:
-<<<<<<< HEAD
             try:
                 d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
             except:
@@ -90,9 +84,6 @@ class Route(Resource):
                 db.session.rollback()
                 d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
 
-=======
-            d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
             if d is None:
                 print("downloading start")
                 download_url(vid, uid)
@@ -107,7 +98,6 @@ class Route(Resource):
                 return {'status': 'wait'}
 
             else:
-<<<<<<< HEAD
                 try:
                     v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
                 except:
@@ -116,11 +106,7 @@ class Route(Resource):
                     v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
                 if v is None:
                     v = Video(vid=vid, uid=uid, status='wait')
-=======
-                v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
-                if v is None:
-                    v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
+
                     db.session.add(v)
                     db.session.commit()
 
@@ -165,16 +151,13 @@ class Route(Resource):
         height = args['height']
         width = args['width']
 
-<<<<<<< HEAD
         try:
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         except:
             db.session.remove()
             db.session.rollback()
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
-=======
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
+
         if v is None:
             return {
                 'status': 'failed',
@@ -208,33 +191,18 @@ class Route(Resource):
         height = args['height']
         width = args['width']
 
-<<<<<<< HEAD
         try:
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         except:
             db.session.remove()
             db.session.rollback()
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
-=======
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
+
         if v is None:
             v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
             db.session.add(v)
             db.session.commit()
-<<<<<<< HEAD
-=======
-        elif v.thumbnails_path is None:
-            v.status = 'processing'
-            db.session.commit()
-            Process(target=make_thumbnail, kwargs={"vid": vid, "uid": uid,
-                                                   "save_path": f"/mnt/master/thumbnails",
-                                                   "grid": (height, width)}).start()
-            return {
-                'status': v.status
-            }
 
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
         try:
             path = v.thumbnails_path[f'{height}{width}']
             return {
@@ -243,7 +211,6 @@ class Route(Resource):
             }
 
         except:
-<<<<<<< HEAD
             if v.status != 'processing':
                 v.status = 'processing'
                 db.session.commit()
@@ -252,8 +219,5 @@ class Route(Resource):
                                                        "grid": (height, width)}).start()
             return {
                 'status': v.status
-=======
-            return {
-                'status': 'something is wrong. error'
->>>>>>> 4d482f261fa2dc25c96e3d08ee2846f24f1af754
+
             }
