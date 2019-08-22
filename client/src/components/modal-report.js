@@ -62,8 +62,15 @@ export class ModalReport extends HTMLElement {
 	stopVideo() {
 		window.player.stopVideo()
 	}
+
+	init() {
+		render(html``, this.querySelector(`.face-content`))
+		render(html``, this.querySelector(`.content-wrap`))
+	}
     
 	show(url, vid) {
+		this.init()
+
 		this.url = url
 		this.style.transform = `scale(1)`
 		this.getYoutubeData(vid)
