@@ -338,6 +338,10 @@ export class ModalReport extends HTMLElement {
 		res = JSON.parse(res)
 
 		render(html `
+		${res.length}개의 댓글이 검색됨
+		`, this.querySelector(`.comment-count`))
+
+		render(html `
 		${res.map(comment => this.comment(comment))}
 		`, this.querySelector(`.content-wrap`))
 	}
