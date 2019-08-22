@@ -24,7 +24,12 @@ class Route(Resource):
         url = args['url']
         userId = args['userId']
 
-        history: History = History.query.filter_by(url=args['url'], userId=args['userId']).first()
+        try:
+            history: History = History.query.filter_by(url=args['url'], userId=args['userId']).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            history: History = History.query.filter_by(url=args['url'], userId=args['userId']).first()
         if history is None:
             return {
                 'status': 'error',
