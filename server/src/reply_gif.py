@@ -4,6 +4,7 @@ import re
 from .utils import *
 import cv2
 import imageio as io
+from pathlib import Path
 
 
 def extract_tag_from_table(vid):
@@ -58,6 +59,13 @@ def tag_to_gif(file_path, tags_dict, gif_path, vid, uid):
     :param gif_path: place to save gifs
     :return: tag_dict addded file path
     """
+    p = Path(gif_path) / str(uid)
+    if not p.exists():
+        p.mkdir()
+    p = Path(f'{gif_path}/{uid}/{vid}')
+    if not p.exists():
+        p.mkdir()
+    gif_path = f'{gif_path}/{uid}/{vid}'
 
     vc = cv2.VideoCapture(file_path)
     gif_duration = 180

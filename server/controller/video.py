@@ -13,7 +13,7 @@ api_video = Namespace('video', description='댓글 태그 gif 및 썸네일을 �
 @api_video.route('/reply_gif')
 class Route(Resource):
 
-    @api_video.doc(params={'vid': 'vid'})
+    @api_video.doc(params={'vid': 'vid', 'uid': 'uid'})
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('vid', help='동영상 URL')
@@ -31,7 +31,7 @@ class Route(Resource):
             }
 
         else:
-            d: Download = Download.query.filter_by(vid=vid, uid=uid)
+            d: Download = Download.query.filter_by(vid=vid, uid=uid).first()
             if d is None:
                 print("downloading start")
                 download_url(vid, uid)
@@ -57,7 +57,7 @@ class Route(Resource):
                     Process(target=tag_to_gif, kwargs={
                         'file_path': file_path,
                         'tags_dict': tags_dict,
-                        'gif_path': f'/mnt/master/gifs/{uid}/{vid}',
+                        'gif_path': f'/mnt/master/gifs',
                         'vid': vid,
                         'uid': uid
                     }).start()

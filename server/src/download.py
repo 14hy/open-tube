@@ -65,7 +65,7 @@ def _get_anoymous_features(vid):
     print(f'file_path: {file_path}')
     for idx_dataset, imgs in enumerate(dataset):
         preds = infer_ssd(imgs)['predicts'].numpy()
-        preds_decode = decode_y2(preds, 0.8, _IOU, img_height=512, img_width=512, normalize_coords=True)
+        preds_decode = decode_y2(preds, 0.8, _IOU, img_height=720, img_width=1280, normalize_coords=True)
 
         for idx_img, img in enumerate(imgs.numpy()):
             time += 1
