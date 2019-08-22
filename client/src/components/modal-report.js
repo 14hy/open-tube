@@ -318,6 +318,21 @@ export class ModalReport extends HTMLElement {
 		`
 	}
 
+	get commentBox() {		
+		return html `
+		<span class="comment-box">
+			<h2 class="title"><i class="fi-comment-quotes size-72"></i> Comment Analysis <span class="comment-count"></span></h2>
+			<div class="content">
+				<h3 class="author">Author</h3>
+				<p class="comment">TEXT</p>
+				<div class="like-count"><i class="fi-like size-72"></i> 777</div>
+				<div class="sentiment-value"><i class="fi-contrast size-72"></i> 123</div>
+				<div class="slang"><i class="fi-skull size-72"></i> TRUE</div>
+			</div>
+		</span>
+		`
+	}
+
 	render() {
 		return html`
         <div class="modal-report"> 
@@ -329,7 +344,9 @@ export class ModalReport extends HTMLElement {
 
 				${this.videoBox}
 
-				${this.faceAnalysisBox}				
+				${this.faceAnalysisBox}
+
+				${this.commentBox}
 
 			</div>
 			<div class="modal-footer">© 2019 Open-Tube, Inc.</div>

@@ -294,7 +294,85 @@ modal-report {
                         }
                     }
                 }
-            }            
+            }  
+            
+            .comment-box {
+                display: inline-block;
+                width: calc(100% - 60px);
+                border-radius: 3px;
+                background-color: #FFFFFF;
+                margin-left: 15px;
+                margin-right: 15px;
+                margin-top: 30px;
+                min-width: 400px;
+                min-height: calc(90vh - 150px);            
+                height: auto;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
+                transition: box-shadow 200ms ease;
+                animation: show 100ms ease;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                max-height: calc(90vh - 150px);
+                margin-bottom: 20px;
+                position: relative;
+
+                & > .title {
+                    color: white;
+                    height: 50px;
+                    background-color: #FF845E;
+                    padding-left: 10px;
+                    margin-left: 0;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    font-size: 18px;
+
+                    i {
+                        vertical-align: sub;
+                        margin-right: 5px;
+
+                        &:before {
+                            font-size: 30px;
+                        }
+                    }
+
+                    .comment-count {
+                        float: right;
+                        font-size: 12px;
+                        white-space: nowrap;
+                        line-height: 2.5em;
+                        color: #FFFACF;
+                        margin-right: 10px;
+                    }                    
+                }
+
+                .content {
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #6666;
+
+                    h3 {      
+                        color: #818586;                  
+                        padding-left: 15px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                    }
+
+                    .comment {                        
+                        color: #3D464A;
+                        padding-left: 15px;                        
+                    }
+
+                    .like-count, .sentiment-value, .slang {
+                        display: inline-block;
+                        color: #988E7A;
+                        padding-top: 10px;
+                        padding-left: 15px;                        
+
+                        i {
+                            font-size: 20px;
+                        }
+                    }                    
+                }
+            } 
         }    
         
         .modal-footer {            
