@@ -83,7 +83,7 @@ class Route(Resource):
             else:
                 v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
                 if v is None:
-                    v = Video(vid=vid, uid=uid, status='wait')
+                    v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
                     db.session.add(v)
                     db.session.commit()
 
@@ -164,7 +164,7 @@ class Route(Resource):
 
         v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         if v is None:
-            v = Video(vid=vid, uid=uid, status='wait')
+            v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
             db.session.add(v)
             db.session.commit()
         elif v.thumbnails_path is None:
