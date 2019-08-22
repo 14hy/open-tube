@@ -3,8 +3,11 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api
 import os
+from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
 CORS(app)
 POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
 
