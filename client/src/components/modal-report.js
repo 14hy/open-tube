@@ -67,7 +67,8 @@ export class ModalReport extends HTMLElement {
 
 	init() {
 		render(html``, this.querySelector(`.face-content`))
-		render(html``, this.querySelector(`.content-wrap`))
+		render(html``, this.querySelector(`.content-wrap`))		
+		this.querySelector(`.word-chart-box`).style.display = `inline-block`
 	}
     
 	show(url, vid) {
@@ -414,16 +415,20 @@ export class ModalReport extends HTMLElement {
 	}
 
 	async createWordChart(vid) {
-		let res = await getXhr(`/api_keywords/${vid}`)
+		try {
+			let res = await getXhr(`/api_keywords/${vid}`)
 
-		res = JSON.parse(res)
-		res = Object.entries(res)
+			res = JSON.parse(res)
+			res = Object.entries(res)
 
-		res.forEach(each => {
-			each[1] *= 20
-		})
+			res.forEach(each => {
+				each[1] *= 20
+			})
 
-		WordCloud(document.getElementById(`word_cloud`), { list: res } )
+			WordCloud(document.querySelector(`#word_cloud`), { list: res } )
+		} catch(err) {
+			this.querySelector(`.word-chart-box`).style.display = `none`
+		}		
 	}
 
 	get wordChart() {		

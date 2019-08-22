@@ -29,7 +29,7 @@ export const loadXhr = actionCreator((state, url, callback) => {
 	return state
 })
 
-export const getXhr = url => new Promise(resolve => {
+export const getXhr = url => new Promise((resolve, reject) => {
 	const xhr = new XMLHttpRequest()
 
 	if(!xhr) {
@@ -42,8 +42,10 @@ export const getXhr = url => new Promise(resolve => {
 		if (xhr.readyState === xhr.DONE) {				
 			if (xhr.status === 200 || xhr.status === 201) {
 				resolve(xhr.responseText)
+			} else {
+				reject(new Error(`500 server error`))
 			}
-		}
+		} 
 	})
 	xhr.send()
 })

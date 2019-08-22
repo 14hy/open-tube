@@ -13,12 +13,19 @@ filter-list {
     left: 0;
     transition: all 0.2s ease;
 
+    // 테마1
+    background-color: #38302C;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.26);
+
     .category-title {
         font-size: 28px;
         font-weight: bold;
         color: #757575;
         margin: 0;
         margin-bottom: 10px;
+
+        // 테마1
+        color: white;
     }
     
     .category-desc {
@@ -26,12 +33,18 @@ filter-list {
         font-size: 12px;
         margin-bottom: 20px;
         word-break: keep-all;
+
+        // 테마1
+        color: #A5A1A0;
     }
     
     .category-filter-1 {
         margin: 0;
         color: #757575;
         font-weight: normal;
+
+        // 테마1
+        color: lightgray;
     }
     
     .filter-ul {
@@ -44,6 +57,14 @@ filter-list {
         font-size: 12px;
         color: #242739;
         margin-bottom: 0.5em;
+
+        // 테마1
+        color: white;
+
+        label {
+            // 테마1
+            color: white;
+        }
     }
     
     .filter-ul [type="checkbox"] {
@@ -67,6 +88,10 @@ filter-list {
 
         position: absolute;
         bottom: 20px;        
+
+        // 테마1
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.26);
+        background-color: white;
 
         &:hover {
             background-color: #C8C8C8;
