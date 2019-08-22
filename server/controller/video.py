@@ -72,7 +72,7 @@ class Route(Resource):
                     }
 
                 else:
-                    return {'status': 'error'}
+                    return {'status': 'processing'}
 
 
 @api_video.route('/thumbnail')
