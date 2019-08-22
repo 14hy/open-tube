@@ -26,14 +26,14 @@ tensorflow == 2.0.0b1
 psycopg2 == 2.8.3
 
 
-#gensim == 3.7.3
+gensim == 3.7.3
 
-#konlpy == 0.5.1
+konlpy == 0.5.1
 
 # src\sentiment_analysis.py: 8
 pandas == 0.23.4
 
-#pycurl == 7.43.0.3
+pycurl == 7.43.0.3
 
 matplotlib == 3.1.1
 imageio >= 2.5.0
