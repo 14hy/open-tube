@@ -38,7 +38,6 @@ def get_cnt_words(replies: Iterable, prep_fn=_prep_text) -> dict:
     """
     단어 빈도를 세줍니다.
     :param replies: string iterator, 댓글들
-
     :param prep_fn: 전처리 함수
 
     :return: dict, {string: int}
