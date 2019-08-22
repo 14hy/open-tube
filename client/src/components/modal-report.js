@@ -19,6 +19,7 @@ export class ModalReport extends HTMLElement {
 
 		this.done = false
 		this.stateFaceImg = true
+		this.comments = null
 	}
 
 	connectedCallback() {
@@ -344,6 +345,8 @@ export class ModalReport extends HTMLElement {
 
 		res = JSON.parse(res)
 
+		this.comments = res
+
 		render(html `
 		${res.length}개의 댓글이 검색됨
 		`, this.querySelector(`.comment-count`))
@@ -353,10 +356,55 @@ export class ModalReport extends HTMLElement {
 		`, this.querySelector(`.content-wrap`))
 	}
 
+	clickAlignComment(align = `index`) {
+		const root = this
+		return {
+			handleEvent(event) {
+				const i = event.currentTarget.querySelector(`i`)
+				let num
+
+				if (i.classList.contains(`fi-arrow-up`)) {
+					i.classList.remove(`fi-arrow-up`)
+					i.classList.add(`fi-arrow-down`)
+					num = -1
+				} else {
+					i.classList.remove(`fi-arrow-down`)
+					i.classList.add(`fi-arrow-up`)
+					num = 1
+				}
+
+				root.comments.sort((a, b) => {
+					if (a[align] > b[align]) {
+						return num
+					}
+					if (a[align] < b[align]) {
+						return -num
+					}
+					return 0
+				})
+				
+				render(html `
+				${root.comments.map(comment => root.comment(comment))}
+				`, root.querySelector(`.content-wrap`))
+
+				root.querySelectorAll(`.title.sub i`).forEach(_i => {
+					_i.classList.add(`none`)
+				})				
+				i.classList.remove(`none`)
+			},
+			capture: true,
+		}
+	}
+
 	get commentBox() {		
 		return html `
 		<span class="comment-box">
 			<h2 class="title"><i class="fi-comment-quotes size-72"></i> Comment Analysis <span class="comment-count"></span></h2>
+			<h2 class="title sub">
+				<span class="title-comment" @click=${this.clickAlignComment()}>Comments <i class="fi-arrow-up size-36"></i></span>
+				<span class="sentiment-value" @click=${this.clickAlignComment(`sentiment`)}>Sentiment Value <i class="fi-arrow-up size-36 none"></i></span>
+				<span class="slang-value" @click=${this.clickAlignComment(`slang`)}>Slang Boolean <i class="fi-arrow-up size-36 none"></i></span>
+			</h2>
 			<div class="content-wrap"></div>
 		</span>
 		`

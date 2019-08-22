@@ -345,8 +345,23 @@ modal-report {
                     }                    
                 }
 
+                & > .sub.title {
+                    display: grid;
+                    grid-template-columns: auto 180px 200px;
+                    align-items: center;
+                    text-align: center;
+
+                    & > span {
+                        cursor: pointer;
+
+                        .none {
+                            display: none;
+                        }
+                    }
+                }
+
                 .content-wrap {
-                    height: calc(100% - 50px);
+                    height: calc(100% - 100px);
                     overflow-y: scroll;
                 }
 
