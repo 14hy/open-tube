@@ -8,6 +8,7 @@ import tensorflow as tf
 from ssd_box_encode_decode_utils import decode_y2
 from pathlib import Path
 import json
+from multiprocessing import Process
 
 print(f'tensorflow - {tf.__version__}')
 
@@ -20,7 +21,7 @@ CV_CAP_PROP_FRAME_COUNT = 7  # Number of frames in the video file.
 
 _CONF = 0.01
 _IOU = 0.15
-threads = []
+processes = []
 ssd_path = '/mnt/master/models/ssd-face/0001'
 # ssd_path = '/Users/minhyeoklee/PycharmProjects/open-tube/server/ssd-face/0001'
 similarity_path = '/mnt/master/models/face-similarity/1'
@@ -64,7 +65,7 @@ def _get_anoymous_features(vid):
     print(f'file_path: {file_path}')
     for idx_dataset, imgs in enumerate(dataset):
         preds = infer_ssd(imgs)['predicts'].numpy()
-        preds_decode = decode_y2(preds, 0.8, _IOU, img_height=512, img_width=512, normalize_coords=True)
+        preds_decode = decode_y2(preds, 0.8, _IOU, img_height=720, img_width=1280, normalize_coords=True)
 
         for idx_img, img in enumerate(imgs.numpy()):
             time += 1
@@ -116,7 +117,7 @@ def norm_imgs(imgs):
     return tf.convert_to_tensor(imgs)
 
 
-def _download(vid, stream):
+def _download(vid, stream=None):
     """영상을 다운로드 받은 후, 익명화를 위한 데이터를 만듭니다.
     :param vid:
     :param stream:
@@ -124,23 +125,25 @@ def _download(vid, stream):
     """
 
     try:
-        file_path = stream.download(output_path=f'{face_dir}/../downloads')
-        print('download done')
+        if stream is not None:
+            file_path = stream.download(output_path=f'{face_dir}/../downloads')
+            print('download done')
     except:
         file_path = None
         print('download failed')
     finally:
-        if not file_path:
-            status = 'failed'
-        else:
-            status = 'downloaded'
-
         d = Download.query.filter_by(vid=vid).first()
-        d.file_path = file_path
-        d.status = status
-        db.session.commit()
+        if not file_path and stream is not None:
+            d.status = 'failed'
+            db.session.commit()
+        elif stream is not None:
+            d.file_path = file_path
+            d.status = 'downloaded'
+            db.session.commit()
 
-    if status == 'downloaded':
+    if d.status == 'downloaded':
+        d.status = 'processing'
+        db.session.commit()
         time_line = _get_anoymous_features(vid)
         d = Download.query.filter_by(vid=vid).first()
         d.time_line = json.dumps(time_line)
@@ -161,11 +164,11 @@ def download_url(vid, uid, res='720p', fps=30):
                 'status': 'wait'
             }
         if q.status == 'downloaded':
+            _download(vid)
             return {
                 'status': 'processing'
             }
         if q.status == 'completed':
-            print(q.time_line)
             return {
                 'status': 'complete',
                 'time_line': q.time_line
@@ -187,8 +190,8 @@ def download_url(vid, uid, res='720p', fps=30):
             if each.fps == fps and each.resolution == res:
                 stream = each
                 break
-        threads.append(threading.Thread(target=_download, kwargs={'vid': vid, 'stream': stream}))
-        threads[-1].start()
+        processes.append(Process(target=_download, kwargs={'vid': vid, 'stream': stream}))
+        processes[-1].start()
         return {
             'status': 'wait'
         }

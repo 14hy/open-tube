@@ -3,8 +3,11 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api
 import os
+from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
 CORS(app)
 POSTGRES_PASSWORD = os.environ['POSTGRES_PASSWORD']
 
@@ -19,8 +22,10 @@ from controller.history import api_history
 from controller.download import api_download
 from controller.get_reply_text import api_reply
 from controller.get_reply_keywords import api_keywords
+from controller.video import api_video
 
 api.add_namespace(api_history)
 api.add_namespace(api_download)
 api.add_namespace(api_reply)
 api.add_namespace(api_keywords)
+api.add_namespace(api_video)
