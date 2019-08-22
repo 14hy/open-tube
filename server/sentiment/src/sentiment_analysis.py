@@ -36,7 +36,7 @@ class SentimentAnalysis:
             tokens.append(tmp)
         return tokens
 
-    def score(self, X):
+    def score(self, index_list, X):
         batch_size = len(X)
 
         empty_tokens = []
@@ -86,9 +86,11 @@ class SentimentAnalysis:
             pred[idx] = round(pred[idx], 2)
         df = pd.DataFrame(pred)
         df.columns = ["sentiment"]
+        df["index"] = index_list
+        df = df[["index", "sentiment"]]
         return df
 
-    def slang(self, X, ban_list=None):
+    def slang(self, index_list, X, ban_list=None):
         slangs = np.zeros(shape=len(X))
         if ban_list != None:
             ban_dict = self.slang_dict + ban_list
@@ -101,6 +103,8 @@ class SentimentAnalysis:
                     break
         df = pd.DataFrame(slangs)
         df.columns = ["slang"]
+        df["index"] = index_list
+        df = df[["index", "slang"]]
         return df
 
 
