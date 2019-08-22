@@ -165,7 +165,7 @@ export class ModalReport extends HTMLElement {
 			render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))	
 		} else if (status === `complete`) {
 			const data = Object.values(JSON.parse(JSON.parse(res)[`time_line`]))
-			const imgCount = data.length			
+			const imgCount = data.length		
 
 			render(html `
 				${imgCount}개의 이미지가 검색됨
@@ -182,6 +182,8 @@ export class ModalReport extends HTMLElement {
 					src="https://open-tube.kro.kr/img-face/${uid}/${this.vid}/${index}.jpg"/>
 				`)}
 			`, this.querySelector(`.face-content`))
+		} else {
+			render(html `SERVER ERROR`, this.querySelector(`.face-content`))
 		}
 	}	
 
@@ -306,8 +308,6 @@ export class ModalReport extends HTMLElement {
 		<span class="face-analysis-box">
 			<h2 class="title"><i class="fi-social-myspace size-72"></i> Face Analysis</h2>
 			<h3 class="title"><i class="fi-photo size-72"></i> All Person Images <span class="face-img-count"></span></h3>
-			<div class="face-content"></div>
-			<h3 class="title"><i class="fi-photo size-72"></i> Images by Time <span class="face-img-count"></span></h3>
 			<div class="face-content"></div>
 			<span class="face-info-box">
 				<i class="fi-x size-72" @click=${this.clickFaceImgX}></i>
