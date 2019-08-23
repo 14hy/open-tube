@@ -39,7 +39,7 @@
 
 ### Web UI
 
-![gif](./assets/GIF.gif)
+![gif](https://user-images.githubusercontent.com/26294469/63587689-97670200-c5df-11e9-82dc-4f855a3bb452.gif)
 
 ## 테스트하기
 
@@ -93,25 +93,16 @@ npm run production
 
 - Database - Postgres, Firebase
 
-
-
-## DEMO
+## etc
 
 - [DEMO URL](https://open-tube.kro.kr/login)
 
+- 세부 작업 목록 [Pull request](https://github.com/open-tube/open-tube/issues?q=is%3Apr+is%3Aclosed)
 
-
-## License
-
-- License: GPLv3
-
-
-
-## etc
-
-- 다른 세부사항은 `WIKI` 및 `Projects` 패널 참조 : [WIKI](https://github.com/open-tube/open-tube/wiki)
-
--  모델 배포 가이드 [WIKI](https://github.com/open-tube/open-tube/wiki/%F0%9F%93%9D-%EB%AA%A8%EB%8D%B8-%EB%B0%B0%ED%8F%AC-%EA%B0%80%EC%9D%B4%EB%93%9C)
+- 모델 배포 가이드 [WIKI](https://github.com/open-tube/open-tube/wiki/%F0%9F%93%9D-%EB%AA%A8%EB%8D%B8-%EB%B0%B0%ED%8F%AC-%EA%B0%80%EC%9D%B4%EB%93%9C)
 
 - 서버 배포 가이드 [WIKI](https://github.com/open-tube/open-tube/wiki/%F0%9F%93%9D-%EC%84%9C%EB%B2%84-%EB%B0%B0%ED%8F%AC-%EA%B0%80%EC%9D%B4%EB%93%9C)
 
+- 다른 세부사항은 `WIKI` 및 `Projects` 패널 참조 : [WIKI](https://github.com/open-tube/open-tube/wiki)
+
+- License: `GPLv3`

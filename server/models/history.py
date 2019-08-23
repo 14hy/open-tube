@@ -6,7 +6,7 @@ class History(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.String)
-    url = db.Column(db.String)
+    url = db.Column(db.String, unique=True)
     keyword = db.Column(db.Boolean)
     sentiment = db.Column(db.Boolean)
     slang = db.Column(db.Boolean)
