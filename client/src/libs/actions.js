@@ -98,7 +98,7 @@ export const xhrCorsServer = path => new Promise(resolve => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`GET`, `https://cors-servers.herokuapp.com/${path}`)
+	xhr.open(`GET`, `https://cors-server-v01.herokuapp.com/${path}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
@@ -119,6 +119,14 @@ export const logout = actionCreator(state => {
 	}).catch(error => {
 		console.error(error)
 	})
+
+	return state
+})
+
+export const messageShow = actionCreator((state, meessage) => {
+	const modal = document.createElement(`modal-message`)
+	modal.message = meessage
+	document.body.appendChild(modal)
 
 	return state
 })
