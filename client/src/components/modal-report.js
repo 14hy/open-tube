@@ -3,7 +3,7 @@ import i18next from 'i18next'
 import randomcolor from 'randomcolor'
 import WordCloud from 'wordcloud'
 
-import { xhrCorsServer, postXhr, getXhr } from '../libs/actions.js'
+import { postXhr, getXhr } from '../libs/actions.js'
 import store from '../libs/store.js'
 
 export class ModalReport extends HTMLElement {
@@ -36,7 +36,7 @@ export class ModalReport extends HTMLElement {
 				videoId: `M7lc1UVf-V`,
 				events: {
 					/* 'onReady': this.onPlayerReady, */
-					/* 'onStateChange': this.onPlayerStateChange.bind(this), */
+					'onStateChange': this.onPlayerStateChange.bind(this),
 				},
 				playerVars: {
 					fs: 0,
@@ -56,8 +56,7 @@ export class ModalReport extends HTMLElement {
 
 	onPlayerStateChange(event) {
 		if (event.data == YT.PlayerState.PLAYING && !this.done) {
-			setTimeout(this.stopVideo, 1000)
-			this.done = true
+			render(``, this.querySelector(`.sensor-box-wrap`))
 		}
 	}
 
@@ -66,9 +65,10 @@ export class ModalReport extends HTMLElement {
 	}
 
 	init() {
-		render(html``, this.querySelector(`.face-content`))
+		render(html`${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))
 		render(html``, this.querySelector(`.content-wrap`))		
 		this.querySelector(`.word-chart-box`).style.display = `inline-block`
+		this.querySelector(`.comment-box`).style.display = `inline-block`
 	}
     
 	show(url, vid) {
@@ -77,6 +77,7 @@ export class ModalReport extends HTMLElement {
 		this.url = url
 		this.style.transform = `scale(1)`
 		this.getYoutubeData(vid)
+		this.getFaceData(vid)
 		window.player.loadVideoById(vid)
 		window.setTimeout(() => window.player.pauseVideo(), 2000)
 
@@ -114,18 +115,43 @@ export class ModalReport extends HTMLElement {
 		}
 	}
 
-	async getYoutubeData(vid) {		
-		const text = await xhrCorsServer(`https://www.youtube.com/watch?v=${vid}`)
+	getYoutubeData(vid) {
+		const userInfo = store.getState().userInfo
+		const db = firebase.firestore()
+		db.collection(`userId`).doc(userInfo.uid).get().then(doc => {
+			if (doc.exists) {
+				Object.values(doc.data()).forEach(each => {
+					if (each.vid === vid) {
+						this.vid = vid
+						this.titles = each.title
+						this.viewCount = each.viewCount
+						this.date = each.writeDate
+						this.desc = each.desc
+						this.likeCount = each.likeCount
+						render(this.render(), this)
+					}
+				})
+			} else {
+				console.error(`No SEACH DB`)
+			}
+		}).catch(err => {
+			console.error(`NO ACCESS DB ${err}`)
+		})						
+	}
 
-		this.vid = vid
-		this.titles = text.match(/videoPrimaryInfoRenderer":{"title":{"runs":\[{"text":"(.*?)"}\]}/)[1]
-		this.viewCount = text.match(/"viewCountText":{"simpleText":"조회수 (.*?)"}/)[1]
-		this.date = text.match(/"dateText":{"simpleText":"게시일: (.*?)"}/)[1]
-		this.desc = text.match(/"description":{"runs":\[{"text":"(.*?)"}/)[1]
-		this.likeCount = text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1]
-		this.getFaceData()
-		
-		render(this.render(), this)			
+	sensorBox(obj) {
+		return html`
+		<span 
+			class="sensor-box"
+			style="
+			top: calc(${obj.bottom} * 100%);
+			left: calc(${obj.left} * 100%);
+			width: calc(${obj.width} * 100%);
+			height: calc(${obj.height} * 100%);
+			border: 3px solid ${obj.color};
+			"
+			></span>
+		`
 	}
 
 	get videoBox() {
@@ -136,7 +162,7 @@ export class ModalReport extends HTMLElement {
 			<div class="player-wrap">
 				<div id="player"></div>
 				<i class="fi-arrows-out size-72 player-full-screen" @click=${this.clickFullScreen}></i>
-				<span class="sensor-box"></span>
+				<span class="sensor-box-wrap"></span>
 			</div>			
 			<h2 class="video-desc">Information</h2>
 			<div class="video-desc">
@@ -163,42 +189,44 @@ export class ModalReport extends HTMLElement {
 		`
 	}
 
-	async getFaceData() {
+	async getFaceData(vid) {
 		const uid = store.getState().userInfo.uid
 		const formData = new FormData()
 		formData.append(`uid`, uid)
-		formData.append(`vid`, this.vid)
+		formData.append(`vid`, vid)
 
-		const res = await postXhr(`/download/`, formData)
+		try {
+			const res = await postXhr(`/download/`, formData)
 
-		const status = JSON.parse(res)[`status`]
+			const status = JSON.parse(res)[`status`]
+			const isProcessing = () => status === `wait` || status === `processing`
 
-		if (status === `wait`) {
-			render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_WAIT`)}`, this.querySelector(`.face-content`))	
-		} else if (status === `processing`)	 {
+			if (isProcessing()) {
+				render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))	
+			} else if (status === `complete`) {
+				const data = Object.values(JSON.parse(JSON.parse(res)[`time_line`]))
+				const imgCount = data.length		
+
+				render(html `
+					${imgCount}개의 이미지가 검색됨
+				`, this.querySelector(`.face-img-count`))
+				
+				render(html `
+					${data.map((img, index) => html`
+					<img
+						@click=${this.mouseclickFaceImg(index, data)}
+						@mouseenter=${this.mouseenterFaceImg(index, data)}
+						@mouseleave=${this.mouseleaveFaceImg}
+						class="face-img" 
+						style="border: 5px solid ${randomcolor({luminosity: `dark`})}" 
+						src="https://open-tube.kro.kr/img-face/${uid}/${vid}/${index}.jpg"/>
+					`)}
+				`, this.querySelector(`.face-content`))
+			}
+
+		} catch(err) {
 			render(html `${i18next.t(`MODAL_REPORT_FACE_STATUS_PROCESSING`)}`, this.querySelector(`.face-content`))	
-		} else if (status === `complete`) {
-			const data = Object.values(JSON.parse(JSON.parse(res)[`time_line`]))
-			const imgCount = data.length		
-
-			render(html `
-				${imgCount}개의 이미지가 검색됨
-			`, this.querySelector(`.face-img-count`))
-			
-			render(html `
-				${data.map((img, index) => html`
-				<img
-					@click=${this.mouseclickFaceImg(index, data)}
-					@mouseenter=${this.mouseenterFaceImg(index, data)}
-					@mouseleave=${this.mouseleaveFaceImg}
-					class="face-img" 
-					style="border: 5px solid ${randomcolor({luminosity: `dark`})}" 
-					src="https://open-tube.kro.kr/img-face/${uid}/${this.vid}/${index}.jpg"/>
-				`)}
-			`, this.querySelector(`.face-content`))
-		} else {
-			render(html `SERVER ERROR`, this.querySelector(`.face-content`))
-		}
+		}		
 	}	
 
 	mouseclickFaceImg(index, data) {
@@ -294,12 +322,21 @@ export class ModalReport extends HTMLElement {
 	}
 
 	get clickSeconds() {
+		const root = this
 		return {
 			handleEvent(event) {
 				const time = event.target.textContent
-
-				window.player.seekTo(time)
+				const desc = event.target.closest(`.time-desc`)
+				window.player.seekTo(time - 1)
 				window.player.pauseVideo()
+
+				render(root.sensorBox({
+					left: desc.querySelector(`.x-value`).textContent,
+					bottom: desc.querySelector(`.y-value`).textContent,
+					width: desc.querySelector(`.width-value`).textContent,
+					height: desc.querySelector(`.height-value`).textContent,
+					color: randomcolor({luminosity: `dark`}),
+				}), root.querySelector(`.sensor-box-wrap`))
 			},
 			capture: true,
 		}
@@ -309,10 +346,10 @@ export class ModalReport extends HTMLElement {
 		return html`
 		<div class="time-desc">
 			<div class="desc-seconds"><h5>Seconds</h5><span class="second-detail" @click=${this.clickSeconds}>${obj.seconds}</span></div>
-			<div class="desc-x"><h5>X: </h5>${obj.x}</div>
-			<div class="desc-y"><h5>Y: </h5>${obj.y}</div>
-			<div class="desc-width"><h5>Width: </h5>${obj.width}</div>
-			<div class="desc-height"><h5>Height: </h5>${obj.height}</div>
+			<div class="desc-x"><h5>X: </h5> <span class="x-value">${obj.x}</span></div>
+			<div class="desc-y"><h5>Y: </h5> <span class="y-value">${obj.y}</span></div>
+			<div class="desc-width"><h5>Width: </h5> <span class="width-value">${obj.width}</span></div>
+			<div class="desc-height"><h5>Height: </h5> <span class="height-value">${obj.height}</span></div>
 		</div>
 		`
 	}
@@ -345,19 +382,23 @@ export class ModalReport extends HTMLElement {
 	}
 
 	async crateCommentBox(vid) {
-		let res = await getXhr(`/api_reply/${vid}`)
+		try {
+			let res = await getXhr(`/api_reply/${vid}`)
 
-		res = JSON.parse(res)
-
-		this.comments = res
-
-		render(html `
-		${res.length}개의 댓글이 검색됨
-		`, this.querySelector(`.comment-count`))
-
-		render(html `
-		${res.map(comment => this.comment(comment))}
-		`, this.querySelector(`.content-wrap`))
+			res = JSON.parse(res)
+	
+			this.comments = res
+	
+			render(html `
+			${res.length}개의 댓글이 검색됨
+			`, this.querySelector(`.comment-count`))
+	
+			render(html `
+			${res.map(comment => this.comment(comment))}
+			`, this.querySelector(`.content-wrap`))
+		} catch(err) {
+			this.querySelector(`.comment-box`).style.display = `none`
+		}		
 	}
 
 	clickAlignComment(align = `index`) {

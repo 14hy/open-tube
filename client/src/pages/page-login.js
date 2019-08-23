@@ -75,11 +75,11 @@ export class PageLogin extends HTMLElement {
 		return html`
 		<div id="pageLogin">
 			<div class="div-info">
-				<span>그림으로 된 설명</span>
+				<!-- <span>그림으로 된 설명</span> -->
 			</div>
 			<div class="div-login">
 				<span class="login-box">
-					<button class="login-btn-sightsee">LOOK AROUND Page</button>
+					<button class="login-btn-sightsee">사이트 둘러보기</button>
 				</span>
 			</div>
 		</div>

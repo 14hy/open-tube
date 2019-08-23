@@ -1,201 +1,86 @@
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+GNU 약소 일반 공중 라이선스
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+버전 3, 2007년 6월 29일
 
-   1. Definitions.
+Copyright (C) 2007 Free Software Foundation, Inc. http://fsf.org/
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
+ 
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+누구든지 본 라이선스를 원문 그대로 복제하고 배포할 수 있다. 그러나 본문에 대한 수정은 허용되지 않는다.
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+제0조. 추가적 정의
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
+본문 중에서 “본 라이선스”는 GNU 약소 일반 공중 라이선스의 버전 3, GNU GPL은 GNU 일반 공중 라이선스의 버전3을 의미한다.
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+“라이브러리”란 아래에 정의된 응용 프로그램이나 결합 저작물을 제외하고 본 라이선스의 적용을 받는 GPL 적용 저작물을 지칭한다.  
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+“응용프로그램”이란 라이브러리에 의해 제공되는 인터페이스를 사용하지만, 라이브러리에 기반하지는 않는 모든 저작물을 의미한다. 라이브러리에 의해 정의된 클래스의 서브클래스를 정의하는 것은 라이브러리에 의해 제공된 인터페이스를 사용하는 형식으로 간주된다.
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+“결합 저작물”이란 라이브러리에 응용프로그램을 결합하거나 링크로 연결하여 생성된 저작물을 의미한다. 결합 저작물을 만들 때 사용된 라이브러리의 특정 버전은 “연결 버전”이라고 지칭한다.
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+결합 저작물의 “최소 해당 소스”란 결합 저작물의 해당 소스 중에서, 독립적으로 간주될 때 연결 버전이 아닌 응용프로그램에 기반한 결합 저작물의 일부를 위한 소스 코드를 제외한 것을 의미한다.
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+결합 저작물의 “해당 응용프로그램 코드”는 응용프로그램으로부터 결합 저작물을 재생성 시키는데 요구되는 모든 데이터와 유틸리티 프로그램을 포함하며, 결합저작물의 시스템 라이브러리를 제외한, 응용프로그램을 위한 오브젝트 코드 및 소스코드를 의미한다.
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+제1조. GNU GPL 3조의 예외
+GNU GPL의 제3조의 조건과 관계없이 본 라이선스의 제3조와 제4조의 조항에 따라 GPL 적용 저작물을 컨베이할 수 있다.
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+제2조. 수정된 버전에 대한 컨베이
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
+라이브러리의 복제본을 수정하는데 있어, 어떤 기능이 그 기능을 사용하는 응용프로그램에 의해 제공되는 어떤 함수나 데이터를 언급할 경우 (기능이 호출될 때 전달되는 인수는 제외함), 다음과 같은 조건 하에 수정된 버전의 복제본을 컨베이할 수 있다.
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+a) 본 라이선스에 따라서 컨베이 한다. 단, 응용프로그램이 함수나 데이터를 제공하지 않는 경우에도 기능이 작동하고 본래의 목적을 정상적으로 수행하도록 최선을 다해 노력해야 한다. 또는,
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+ 
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+b) GNU GPL에 따라서 컨베이 한다. 이 경우, 본 라이선스의 추가적 허용사항을 적용하지 않는다.
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+ 
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+제3조. 라이브러리 헤더 파일의 자료를 결합하는 오브젝트 코드
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+응용프로그램의 오브젝트 코드는 라이브러리의 일부를 구성하는 헤더 파일의 자료를 결합한 형태로 작성될 수 있다. 만약 이러한 오브젝트 코드와 결합된 자료가 숫자 매개변수, 데이터 구조의 설계형태, 접근도구, 작은 매크로, (10행 이하의) 인라인 함수, 그리고 템플릿으로 제한되는 것이 아니라면, 그 오브젝트 코드는 다음과 같은 두 가지 조건을 충족시킨다는 조건 하에 당신이 임의로 정한 규정에 따라 컨베이 될 수 있다.
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
+a) 오브젝트 코드 내에 라이브러리가 사용되고 있다는 사실과 라이브러리 및 라이브러리의 사용에 대해 본 라이선스가 적용된다는 내용의 안내 문구를 각 복제본에 명확하게 고지해야 한다.
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+b) GNU GPL의 사본 및 본 라이선스 문서를 오브젝트 코드에 첨부해야 한다.
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+제4조. 결합 저작물
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+당신은 임의로 정한 조건에 따라 결합 저작물을 컨베이할 수 있다. 단, 당신이 정한 조건들은 결합 저작물 내에 포함된 라이브러리의 일부에 대한 수정 및 그 수정 부분을 디버깅하기 위한 역공학에 대해 제한을 두어서는 안 되며, 다음의 조건들을 충족시켜야 한다.
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
+a) 결합 저작물 내에 라이브러리가 사용되고 있다는 사실과 라이브러리 및 라이브러리의 사용에 대해 본 라이선스가 적용된다는 내용의 안내 문구를 각 복제본에 명확하게 고지해야 한다.
 
-   END OF TERMS AND CONDITIONS
+b) GNU GPL의 사본 및 본 라이선스 문서를 결합 저작물과 함께 제공해야 한다.
 
-   APPENDIX: How to apply the Apache License to your work.
+c) 결합 저작물이 실행되는 도중에 저작권 사항이 표시되는 경우에는, 라이브러리에 대한 저작권 사항도 함께 포함시켜야 하며, GNU GPL 및 본 라이선스의 사본을 참고할 수 있는 방법을 명시해야 한다.
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+d) 다음 중 하나의 방법을 사용해야 한다:
 
-   Copyright [yyyy] [name of copyright owner]
+0) 해당 소스의 컨베이 행위에 관한 GNU GPL의 제6조에 상술된 방식에 기반하여, 최소 해당 소스는 본 라이선스의 규정에 따라 컨베이하고, 해당 응용프로그램 코드는 사용자가 응용프로그램과 연결 버전의 수정된 버전을 재결합 혹은 재연결하여 수정된 결합 저작물을 생성하는 것이 가능하도록, 그리고 이에 적합한 형태로 컨베이 해야 한다.
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+1) 라이브러리와 연결시키기에 적절한 공유 라이브러리 방식을 사용해야 한다. 적절한 방식이란, (a) 실행 시점에서 볼 때 이미 사용자의 컴퓨터 시스템 상에 존재하고 있는 라이브러리의 복제물을 사용하는 방식, 그리고 (b) 연결 버전과 인터페이스 상으로 호환되는, 라이브러리의 수정된 버전으로도 적절하게 작동할 수 있는 방식을 의미한다.
 
-       http://www.apache.org/licenses/LICENSE-2.0
+ 
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+e) GNU GPL의 제6조에 따라 설치 정보 제공에 대한 요구를 받게 될 경우에 한해 설치 정보를 제공해야 한다. 이 설치 정보는 응용프로그램과 연결 버전의 수정 버전을 재결합하거나 재연결한 결과로 생성된, 수정된 버전의 결합 저작물을 설치하고 실행하는데 필요한 정보에 한한다. (제4조 d항의 0번 옵션을 사용하는 경우에는 최소 해당 소스와 해당 응용프로그램 소스와 함께 설치 정보가 동반되어야 한다. 4조d항의 1번 옵션을 사용하는 경우에는 해당 소스의 컨베이 행위에 대한 GNU GPL의 제6조에 상술된 방식으로 설치 정보를 제공해야 한다.)
+
+ 
+
+제5조. 결합 라이브러리
+
+라이브러리에 기반한 저작물인 라이브러리의 기능을 본 라이선스가 적용되지 않는 다른 라이브러리의 기능들과 하나의 라이브러리 내에 병존시키고, 이러한 결합 라이브러리를 다음과 같은 두 가지 조건을 모두 충족시킨다는 조건 하에, 당신이 임의로 정한 규정에 따라 컨베이할 수 있다.
+
+a) 라이브러리에 기반한 저작물의 복제물을 다른 어떤 라이브러리와도 결합되지 않은 독립된 상태로 결합 라이브러리와 함께 제공해야 하며, 이는 본 라이선스의 규정에 따라 컨베이 되어야 한다.
+
+b) 결합 라이브러리의 일부가 라이브러리에 기반한 저작물이라는 사실을 명확하게 고지해야 하며, 그 저작물의 결합되지 않은 형태를 어디에서 구할 수 있는지를 명시해야 한다.
+
+ 
+
+제6조. GNU 약소 일반 공중 라이선스의 개정판
+
+자유 소프트웨어 재단은 때때로 GNU 약소 일반 공중 라이선스의 개정판이나 신규 버전을 공표할 수 있다. 새롭게 공표될 신규 버전은 기본적인 취지에 있어 원판과 변함이 없을 것이지만, 새로운 문제나 현안에 대처하기 위해 세부적인 내용에 차이가 발생할 수 있다.
+
+각각의 판들은 버전 넘버를 사용해서 구별된다. GNU 약소 일반 공중 라이선스의 어떤 특정한 버전 넘버와 “그 이후에 출시된 버전”을 따른다는 사항이 명시된 프로그램에는 해당 버전이나 그 이후에 자유 소프트웨어 재단에서 발행된 어떤 버전을 선택해서 적용해도 무방하다. 버전 넘버를 명시하고 있지 않은 라이브러리의 경우에는 자유 소프트웨어 재단이 공표한 어떠한 버전의 판을 적용해도 무방하다.
+
+당신이 양도받은 라이브러리가 GNU 약소 일반 공중 라이선스의 버전 선택을 대리인에게 위임한다고 명시하는 경우, 그 대리인이 특정 버전의 수용을 공표함으로써 당신이 그 라이브러리에 어떤 버전을 사용할지 영구적으로 결정된다.

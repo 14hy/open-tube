@@ -27,7 +27,7 @@ def extract_save_reply(youtube_url):
     print(__cmd)
     try:
         subprocess.call(__cmd, shell=True)
-#        subprocess.call(f"mv {youtube_key}.json json/", shell=True)
+        #        subprocess.call(f"mv {youtube_key}.json json/", shell=True)
         return 1
     except Exception as e:
         print(e)
@@ -54,7 +54,7 @@ def get_table_data(youtube_url, func_name):
         results = cur.fetchall()
         result = [row[0] for row in results]
         index = [row[1] for row in results]
-        temp = sentiment_class.score(index,result)
+        temp = sentiment_class.score(index, result)
         print(temp)
         query = f'alter table "{table}" add column sentiment varchar'
         cur.execute(query)
@@ -73,7 +73,7 @@ def get_table_data(youtube_url, func_name):
         results = cur.fetchall()
         result = [row[0] for row in results]
         index = [row[1] for row in results]
-        temp = sentiment_class.slang(index,result)
+        temp = sentiment_class.slang(index, result)
         print(temp)
         query = f'alter table "{table}" add column slang varchar'
         cur.execute(query)

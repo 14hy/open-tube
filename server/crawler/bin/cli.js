@@ -43,7 +43,8 @@ if (argv.channel) {
     console.warn(`Getting comments from video ${url}`);
     comments(url).then((res) => {
         var temp = JSON.stringify(res['comments']);
-        fs.writeFile( `/root/open-tube/server/json/${fileName}.json`, temp, "utf8",function(res){});
+        fs.writeFile(`/root/open-tube/server/json/${fileName}.json`, temp, "utf8", function (res) {
+        });
         close();
     }).catch((err) => {
         console.error(err);

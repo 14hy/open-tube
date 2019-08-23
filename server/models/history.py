@@ -9,5 +9,6 @@ class History(db.Model):
     url = db.Column(db.String, unique=True)
     keyword = db.Column(db.Boolean)
     sentiment = db.Column(db.Boolean)
+    slang = db.Column(db.Boolean)
     time = db.Column(db.DateTime, default=datetime.utcnow)
     done = db.Column(db.Integer, default=0)

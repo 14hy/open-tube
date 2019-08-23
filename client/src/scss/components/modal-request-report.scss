@@ -124,6 +124,10 @@ modal-request-report {
                         color: #1779ba;
                         border: 1px solid #1779ba;
                         padding-left: 2px;
+
+                        // 읽기 전용
+                        color: gray;
+                        border-color: lightgray;
                     }
                 }
             }

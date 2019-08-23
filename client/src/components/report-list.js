@@ -1,8 +1,8 @@
 import { html, render } from 'lit-html'
 
-import { xhrFirebase } from '../libs/actions.js'
 import { main } from '../main.js'
 import store from '../libs/store.js'
+import { getXhr } from '../libs/actions.js'
 
 export class ReportList extends HTMLElement {
 	constructor() {
@@ -10,7 +10,15 @@ export class ReportList extends HTMLElement {
 	}
     
 	connectedCallback() {
-		render(this.render(), this)		
+		render(this.render(), this)
+
+		this.intervalReload = window.setInterval(() => {
+			render(this.render(), this)
+		}, 60000)
+	}
+
+	disconnectedCallback() {
+		window.clearInterval(this.intervalReload)
 	}
 
 	clickReport() {
@@ -45,26 +53,47 @@ export class ReportList extends HTMLElement {
 
 	get li() {
 		const info = store.getState().userInfo
+		const uid = info.uid || `1InVr0t4PdTWHcomCZlcuJ0ZZB03`
+		const db = firebase.firestore()
+
 		if (!info) {
 			return html``
 		}
-		xhrFirebase(`/${info.uid}/reportList`, db => {
-			if (!db) {
-				return
+
+		db.collection(`userId`).doc(uid).get().then(doc => {
+			if (doc.exists) {
+				this.renderLi(doc.data())
+			} else {
+				console.error(`No SEACH DB`)
 			}
-			this.renderLi(db)
+		}).catch(err => {
+			console.error(`NO ACCESS DB ${err}`)
 		})
 
 		return html``
 	}
 
 	renderLi(db) {
-		const _db = JSON.parse(db)
 		const ul = this.querySelector(`.ul-reports`)
+		const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
+		let i = 0		
 		const li = item => {
-			const date = new Date(item.time._seconds * 1000).toLocaleDateString()
-			const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
+			getXhr(`/history/?userId=1InVr0t4PdTWHcomCZlcuJ0ZZB03&url=https://www.youtube.com/watch?v=${item.vid}`).then(res2 => {
+				const isComplete = () => statusName[JSON.parse(res2).status + 1] === `분석 완료`
+				const isProcessing = () => statusName[JSON.parse(res2).status + 1] === `분석 중`
+				render(html`${statusName[JSON.parse(res2).status + 1]}`, this.querySelectorAll(`.report-status`)[i])
+				if (isComplete()) {
+					this.querySelectorAll(`.report-status`)[i].classList.add(`complete`)
+				} else if (isProcessing()) {
+					this.querySelectorAll(`.report-status`)[i].classList.add(`processing`)
+				}
+				i += 1
+			})
+
+			const date = new Date(item.time.seconds * 1000).toLocaleDateString()
+			
 			const status = statusName[item.status]
+
 			return html`
 			<li class="li-report" @click=${this.clickReport()}>						
 				<div class="report-wrap"><span class="report-status">${status}</span><span class="report-title">${item.title}</span></div>
@@ -75,16 +104,15 @@ export class ReportList extends HTMLElement {
 			`
 		}
 
-		ul.innerHTML = ``
 		render(html`
-			${Object.values(_db).map(i => li(i))}
+			${Object.values(db).map(_i => li(_i))}
 		`, ul)
 	}
 
 	render() {
 		return html`
 		<ul class="ul-reports">
-			${this.li}			
+			${this.li}
 		</ul>
 		`
 	}

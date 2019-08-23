@@ -5,7 +5,7 @@ class Video(db.Model):
     __tablename__ = 'video'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    vid = db.Column(db.String, nullable=False, unique=True)
+    vid = db.Column(db.String, nullable=False)
     uid = db.Column(db.String, unique=False, nullable=False)
     status = db.Column(db.Enum('wait', 'processing', 'complete', name='video_type'),
                        nullable=False, default=False)
