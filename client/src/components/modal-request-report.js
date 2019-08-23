@@ -1,8 +1,8 @@
 import { html, render } from 'lit-html'
 import i18next from 'i18next'
 
-import { postXhr, messageShow } from '../libs/actions.js'
-import store from '../libs/store.js'
+import { xhrCorsServer, postXhr, messageShow } from '../libs/actions.js'
+// import store from '../libs/store.js'
 
 export class ModalRequestReport extends HTMLElement {
 	constructor() {
@@ -48,11 +48,11 @@ export class ModalRequestReport extends HTMLElement {
 		const root = this
 		return {
 			handleEvent() {
-				const uid = store.getState().userInfo.uid
-				const url = root.querySelector(`#inputYoutubeURL`).value
+				// const uid = store.getState().userInfo.uid
+				const url = root.querySelector(`#inputYoutubeURL`).value				
 				
 				const formData = new FormData()
-				formData.append(`userId`, uid)
+				formData.append(`userId`, `1InVr0t4PdTWHcomCZlcuJ0ZZB03`)
 				formData.append(`keyword`, root.querySelector(`#itemKeyword`).checked)
 				formData.append(`sentiment`, root.querySelector(`#itemComment`).checked)
 				formData.append(`slang`, root.querySelector(`#itemComment`).checked)
@@ -60,14 +60,24 @@ export class ModalRequestReport extends HTMLElement {
 
 				if (!root.regUrlType(url)) {
 					messageShow(`URL 형식이 잘못되었습니다.`)
+					
 				}
+
+				const vid = new URL(url).searchParams.get(`v`)
 				
 				postXhr(`/history/`, formData).then(res => {
-					if (JSON.parse(res).status === `success`) {
-						messageShow(`레포트 요청이 접수되었습니다.`)
+					if (JSON.parse(res).status === `success`) {						
 						root.hide()
-					}					
-				})
+						messageShow(`레포트 요청이 접수되었습니다.`)
+						try {
+							root.getYoutubeData(vid).then(youtubeInfo => {
+								root.setDb(youtubeInfo)								
+							})
+						} catch(err) {
+							messageShow(`레포트 요청 접수 실패`)
+						}					
+					}
+				})	
 			},
 			capture: true,
 		}
@@ -78,6 +88,48 @@ export class ModalRequestReport extends HTMLElement {
 	
 		return regex.test(data)
 	
+	}
+
+	setDb(youtubeInfo) {
+		const db = firebase.firestore()
+		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+			if (doc.exists) {
+				const data = doc.data()
+				const length = Object.values(data).length        
+				const obj = {}
+				
+				obj[length] = {
+					status: 1,
+					time: firebase.firestore.Timestamp.fromDate(new Date()),
+					title: youtubeInfo.title,
+					vid: youtubeInfo.vid,
+					viewCount: youtubeInfo.viewCount,
+					writeDate: youtubeInfo.date,
+					desc: youtubeInfo.desc,
+					likeCount: youtubeInfo.likeCount,
+				}
+				
+				db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).update(obj).catch(err => {
+					console.error(`NO ACCESS DB ${err}`)
+				})
+			} else {
+				console.error(`No SEACH DB`)
+			}
+		}).catch(err => {
+			console.error(`NO ACCESS DB ${err}`)
+		})
+	}
+
+	async getYoutubeData(vid) {		
+		const text = await xhrCorsServer(`https://www.youtube.com/watch?v=${vid}`)
+		return {
+			vid,
+			title: text.match(/videoPrimaryInfoRenderer":{"title":{"runs":\[{"text":"(.*?)"}\]}/)[1],
+			viewCount: text.match(/"viewCountText":{"simpleText":"조회수 (.*?)"}/)[1],
+			date: text.match(/"dateText":{"simpleText":"게시일: (.*?)"}/)[1],
+			desc: text.match(/"description":{"runs":\[{"text":"(.*?)"}/)[1],
+			likeCount: text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1],
+		}
 	}
 
 	render() {

@@ -3,7 +3,7 @@ import i18next from 'i18next'
 import randomcolor from 'randomcolor'
 import WordCloud from 'wordcloud'
 
-import { xhrCorsServer, postXhr, getXhr } from '../libs/actions.js'
+import { postXhr, getXhr } from '../libs/actions.js'
 import store from '../libs/store.js'
 
 export class ModalReport extends HTMLElement {
@@ -76,7 +76,7 @@ export class ModalReport extends HTMLElement {
 
 		this.url = url
 		this.style.transform = `scale(1)`
-		// this.getYoutubeData(vid)
+		this.getYoutubeData(vid)
 		this.getFaceData(vid)
 		window.player.loadVideoById(vid)
 		window.setTimeout(() => window.player.pauseVideo(), 2000)
@@ -115,17 +115,27 @@ export class ModalReport extends HTMLElement {
 		}
 	}
 
-	async getYoutubeData(vid) {		
-		const text = await xhrCorsServer(`https://www.youtube.com/watch?v=${vid}`)
-
-		this.vid = vid
-		this.titles = text.match(/videoPrimaryInfoRenderer":{"title":{"runs":\[{"text":"(.*?)"}\]}/)[1]
-		this.viewCount = text.match(/"viewCountText":{"simpleText":"조회수 (.*?)"}/)[1]
-		this.date = text.match(/"dateText":{"simpleText":"게시일: (.*?)"}/)[1]
-		this.desc = text.match(/"description":{"runs":\[{"text":"(.*?)"}/)[1]
-		this.likeCount = text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1]		
-		
-		render(this.render(), this)			
+	getYoutubeData(vid) {
+		const db = firebase.firestore()
+		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+			if (doc.exists) {
+				Object.values(doc.data()).forEach(each => {
+					if (each.vid === vid) {
+						this.vid = vid
+						this.titles = each.title
+						this.viewCount = each.viewCount
+						this.date = each.time
+						this.desc = each.desc
+						this.likeCount = each.likeCount
+						render(this.render(), this)
+					}
+				})
+			} else {
+				console.error(`No SEACH DB`)
+			}
+		}).catch(err => {
+			console.error(`NO ACCESS DB ${err}`)
+		})						
 	}
 
 	sensorBox(obj) {
