@@ -89,14 +89,17 @@ export class ModalRequestReport extends HTMLElement {
 	
 	}
 
+	
+	// eslint-disable-next-line max-lines-per-function
 	setDb(youtubeInfo) {
 		const uid = store.getState().userInfo.uid
 		const db = firebase.firestore()
 		db.collection(`userId`).doc(uid).get().then(doc => {
 			if (doc.exists) {
 				const data = doc.data()
-				const length = Object.values(data).length        
+				const length = Number(Object.keys(data)[Object.keys(data).length - 1]) + 1
 				const obj = {}
+				const formData = new FormData()
 				let isDuplicate = false
 				
 				obj[length] = {
@@ -126,6 +129,10 @@ export class ModalRequestReport extends HTMLElement {
 				})
 				messageShow(`레포트 요청이 접수되었습니다.`)
 				document.querySelector(`report-list`).render()
+				
+				formData.append(`uid`, uid)
+				formData.append(`vid`, youtubeInfo.vid)
+				postXhr(`/download/`, formData)
 			} else {
 				console.error(`No SEACH DB`)
 			}

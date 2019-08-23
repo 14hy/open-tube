@@ -1,9 +1,11 @@
 import { storiesOf } from '@storybook/polymer'
 // import { document } from 'global'
-import '../components/page-main.js'
+import '../main.js'
+import '../../public/src/css/style.css'
 
 storiesOf(`Page`, module)
-	.add(`page-main`, () => `<page-main></page-main>`)
+	.add(`page-login`, () => `<page-login></page-login>`)
+	.add(`page-reports`, () => `<page-reports></page-reports>`)
 
 // storiesOf(`Demo`, module)
 // 	.add(`heading`, () => `<h1>Hello World</h1>`)
