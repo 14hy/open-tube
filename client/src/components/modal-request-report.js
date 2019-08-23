@@ -134,6 +134,7 @@ export class ModalRequestReport extends HTMLElement {
 				formData.append(`vid`, youtubeInfo.vid)
 				postXhr(`/download/`, formData)
 			} else {
+				messageShow(`인증되지 않은 사용자 입니다.`)
 				console.error(`No SEACH DB`)
 			}
 		}).catch(err => {
