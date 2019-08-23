@@ -75,17 +75,20 @@ export class ReportList extends HTMLElement {
 	renderLi(db) {
 		const ul = this.querySelector(`.ul-reports`)
 		const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
-		let i = 0
+		let i = 0		
 		const li = item => {
-			getXhr(`/history/?userId=1InVr0t4PdTWHcomCZlcuJ0ZZB03&url=https://www.youtube.com/watch?v=${item.vid}`).then(res => {
-				render(html`${statusName[JSON.parse(res).status + 1]}`, this.querySelectorAll(`.report-status`)[i])				
-				if (statusName[JSON.parse(res).status + 1] === `분석 완료`) {
+			getXhr(`/history/?userId=1InVr0t4PdTWHcomCZlcuJ0ZZB03&url=https://www.youtube.com/watch?v=${item.vid}`).then(res2 => {
+				const isComplete = () => statusName[JSON.parse(res2).status + 1] === `분석 완료`
+				const isProcessing = () => statusName[JSON.parse(res2).status + 1] === `분석 중`
+				render(html`${statusName[JSON.parse(res2).status + 1]}`, this.querySelectorAll(`.report-status`)[i])				
+				if (isComplete()) {
 					this.querySelectorAll(`.report-status`)[i].classList.add(`complete`)
-				} else if (statusName[JSON.parse(res).status + 1] === `분석 중`) {
+				} else if (isProcessing()) {
 					this.querySelectorAll(`.report-status`)[i].classList.add(`processing`)
 				}
 				i += 1
-			})
+			})			
+
 			const date = new Date(item.time.seconds * 1000).toLocaleDateString()
 			
 			const status = statusName[item.status]
@@ -103,7 +106,7 @@ export class ReportList extends HTMLElement {
 		render(html`
 			${Object.values(db).map(_i => li(_i))}
 		`, ul)
-	}	
+	}
 
 	render() {
 		return html`
