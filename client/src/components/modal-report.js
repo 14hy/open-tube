@@ -124,7 +124,7 @@ export class ModalReport extends HTMLElement {
 						this.vid = vid
 						this.titles = each.title
 						this.viewCount = each.viewCount
-						this.date = each.time
+						this.date = each.writeDate
 						this.desc = each.desc
 						this.likeCount = each.likeCount
 						render(this.render(), this)
