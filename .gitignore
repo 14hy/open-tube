@@ -2,7 +2,6 @@
 
 data/
 glove/
-tensorflow/
 .idea/
 word2vec/
 __pycache__/
