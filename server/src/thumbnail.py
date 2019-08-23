@@ -25,12 +25,21 @@ def make_thumbnail(vid, uid, save_path, grid=(4, 1)):
     if not p.exists():
         p.mkdir()
     save_path = str(Path(f'{save_path}/{uid}/{vid}/{grid[0]}{grid[1]}.png'))
-
-    d: Download = Download.query.filter_by(vid=vid).first()
+    try:
+        d: Download = Download.query.filter_by(vid=vid).first()
+    except:
+        db.session.remove()
+        db.session.rollback()
+        d: Download = Download.query.filter_by(vid=vid).first()
     if d is None:
         download_url(vid, uid)
+        try:
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+        except:
+            db.session.remove()
+            db.session.rollback()
+            v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
 
-        v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
         v.status = 'processing'
         db.session.commit()
 
@@ -67,6 +76,11 @@ def make_thumbnail(vid, uid, save_path, grid=(4, 1)):
 
     fig.tight_layout()
     plt.savefig(save_path, dpi=100, pad_inches=0)
-    v: Video = Video.query.filter_by(vid=vid, uid=uid)
+    try:
+        v: Video = Video.query.filter_by(vid=vid, uid=uid)
+    except:
+        db.session.remove()
+        db.session.rollback()
+        v: Video = Video.query.filter_by(vid=vid, uid=uid)
     v.thumbnails_path[f'{grid[0]}{grid[1]}'] = save_path
     db.session.commit()
