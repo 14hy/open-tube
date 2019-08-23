@@ -49,7 +49,7 @@ def get_cnt_words(replies: Iterable, prep_fn=_prep_text) -> dict:
 
     for reply in replies:
         if not isinstance(reply, str):
-            reply = reply[1]
+            reply = reply[0]
         reply = prep_fn(reply)
         for word in reply.split():
             cnt_words[word] = cnt_words.get(word, 0) + 1
