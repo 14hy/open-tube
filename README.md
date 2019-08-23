@@ -40,14 +40,7 @@
 3. 인식한 얼굴을 구분하기 위한 `얼굴 유사도 모델`또한 바이너리 포맷으로 변환-[notebook](https://nbviewer.jupyter.org/github/rhodochrosite/my-snippets/blob/master/2019_08/tf1%20eager%26tf.keras%20to%20saved_model.ipynb)하여 사용하였습니다. 얼굴을 인식이후, cropping 하여 얼굴만 잘라낸 후, 영상내의 얼굴들을 구별하기 위해 사용합니다. 
 
 ### Web UI
-
-![image](https://user-images.githubusercontent.com/12870549/63569650-388c9300-c5b5-11e9-8774-e0de8a312656.png)
-
-![image](https://user-images.githubusercontent.com/12870549/63569693-65d94100-c5b5-11e9-8cb9-00b611eba9c7.png)
-
-![image](https://user-images.githubusercontent.com/12870549/63569832-f0ba3b80-c5b5-11e9-8c4a-98ea1a4391fe.png)
-
-![image](https://user-images.githubusercontent.com/12870549/63569787-c23c6080-c5b5-11e9-81f8-d605b2e09976.png)
+![gif](./assets/GIF.gif)
 
 ### Accordion
 
