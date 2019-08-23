@@ -37,10 +37,12 @@ export class FilterList extends HTMLElement {
             ${i18next.t(`FILTER_DESC`)}
         </div>
         <h3 class="category-filter-1">
-            Filter List
+            Report Step
         </h3>
         <ul class="filter-ul">
-            <li><input type="checkbox" id="li1"/><label for="li1">감성 분석</label></li>
+            <li><input type="checkbox" id="li1" checked/><label for="li1">대기 중</label></li>
+			<li><input type="checkbox" id="li2" checked/><label for="li2">분석 중</label></li>
+			<li><input type="checkbox" id="li3" checked/><label for="li3">분석 완료</label></li>
         </ul>
         <button class="btn-request-report" @click=${this.clickRequestReport()}>${i18next.t(`BTN_REQUEST_REPORT`)}</button>
         `

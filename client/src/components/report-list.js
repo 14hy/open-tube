@@ -2,6 +2,7 @@ import { html, render } from 'lit-html'
 
 import { main } from '../main.js'
 import store from '../libs/store.js'
+import { getXhr } from '../libs/actions.js'
 
 export class ReportList extends HTMLElement {
 	constructor() {
@@ -65,10 +66,22 @@ export class ReportList extends HTMLElement {
 
 	renderLi(db) {
 		const ul = this.querySelector(`.ul-reports`)
-		const li = item => {			
+		const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
+		let i = 0
+		const li = item => {
+			getXhr(`/history/?userId=1InVr0t4PdTWHcomCZlcuJ0ZZB03&url=https://www.youtube.com/watch?v=${item.vid}`).then(res => {
+				render(html`${statusName[JSON.parse(res).status + 1]}`, this.querySelectorAll(`.report-status`)[i])				
+				if (statusName[JSON.parse(res).status + 1] === `분석 완료`) {
+					this.querySelectorAll(`.report-status`)[i].classList.add(`complete`)
+				} else if (statusName[JSON.parse(res).status + 1] === `분석 중`) {
+					this.querySelectorAll(`.report-status`)[i].classList.add(`processing`)
+				}
+				i += 1
+			})
 			const date = new Date(item.time.seconds * 1000).toLocaleDateString()
-			const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
+			
 			const status = statusName[item.status]
+
 			return html`
 			<li class="li-report" @click=${this.clickReport()}>						
 				<div class="report-wrap"><span class="report-status">${status}</span><span class="report-title">${item.title}</span></div>
@@ -79,16 +92,15 @@ export class ReportList extends HTMLElement {
 			`
 		}
 
-		ul.innerHTML = ``
 		render(html`
 			${Object.values(db).map(i => li(i))}
 		`, ul)
-	}
+	}	
 
 	render() {
 		return html`
 		<ul class="ul-reports">
-			${this.li}			
+			${this.li}
 		</ul>
 		`
 	}

@@ -24,8 +24,8 @@ export class ModalRequestReport extends HTMLElement {
 	get clickX() {
 		const root = this
 		return {
-			handleEvent() { 
-				root.hide()				
+			handleEvent() {
+				root.hide()
 			},
 			capture: true,
 		}
@@ -36,9 +36,9 @@ export class ModalRequestReport extends HTMLElement {
 		<div class="analysis-box">
 			<label class="label-analysis-list">${i18next.t(`MODAL_REQUEST_LABEL_ANALYSIS`)}</label>
 			<ul>
-				<li><input id="itemFace" type="checkbox" checked/><label for="itemFace"></label>영상 얼굴 인식</li>
-				<li><input id="itemComment" type="checkbox" checked/><label for="itemComment"></label>댓글 감성 분석</li>
-				<li><input id="itemKeyword" type="checkbox" checked/><label for="itemKeyword"></label>키워드 분석</li>
+				<li><input id="itemFace" type="checkbox" checked disabled/><label for="itemFace"></label>영상 인물 인식</li>
+				<li><input id="itemComment" type="checkbox" checked disabled/><label for="itemComment"></label>댓글 감성 분석</li>
+				<li><input id="itemKeyword" type="checkbox" checked disabled/><label for="itemKeyword"></label>키워드 분석</li>
 			</ul>
 		</div>
 		`
@@ -67,17 +67,17 @@ export class ModalRequestReport extends HTMLElement {
 				
 				postXhr(`/history/`, formData).then(res => {
 					if (JSON.parse(res).status === `success`) {						
-						root.hide()
-						messageShow(`레포트 요청이 접수되었습니다.`)
+						root.hide()						
 						try {
 							root.getYoutubeData(vid).then(youtubeInfo => {
-								root.setDb(youtubeInfo)								
+								root.setDb(youtubeInfo)
+								document.querySelector(`#inputYoutubeURL`).value = ``
 							})
 						} catch(err) {
 							messageShow(`레포트 요청 접수 실패`)
 						}					
 					}
-				})	
+				})
 			},
 			capture: true,
 		}
@@ -97,6 +97,7 @@ export class ModalRequestReport extends HTMLElement {
 				const data = doc.data()
 				const length = Object.values(data).length        
 				const obj = {}
+				let isDuplicate = false
 				
 				obj[length] = {
 					status: 1,
@@ -108,10 +109,23 @@ export class ModalRequestReport extends HTMLElement {
 					desc: youtubeInfo.desc,
 					likeCount: youtubeInfo.likeCount,
 				}
+
+				Object.values(data).forEach(each => {
+					if (youtubeInfo.vid === each.vid) {
+						isDuplicate = true
+					}
+				})
+				
+				if (isDuplicate) {
+					messageShow(`실패: 중복된 레포트 요청`)
+					return
+				}
 				
 				db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).update(obj).catch(err => {
 					console.error(`NO ACCESS DB ${err}`)
 				})
+				messageShow(`레포트 요청이 접수되었습니다.`)
+				document.querySelector(`report-list`).render()
 			} else {
 				console.error(`No SEACH DB`)
 			}
