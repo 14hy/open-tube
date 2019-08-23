@@ -10,7 +10,7 @@ class ExtractReply(Resource):
     @api_keywords.doc('api_keywords')
     def get(self, vid):
         conn = db.session.connection()
-        result = conn.execute(f'select * from {vid.lower()}')
+        result = conn.execute(f'select * from "{vid.lower()}"')
         conn.close()
         keywords = get_cnt_words(result)
         return keywords
