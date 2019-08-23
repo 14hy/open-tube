@@ -10,7 +10,15 @@ export class ReportList extends HTMLElement {
 	}
     
 	connectedCallback() {
-		render(this.render(), this)		
+		render(this.render(), this)
+
+		this.intervalReload = window.setInterval(() => {
+			render(this.render(), this)
+		}, 60000)
+	}
+
+	disconnectedCallback() {
+		window.clearInterval(this.intervalReload)
 	}
 
 	clickReport() {
