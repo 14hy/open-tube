@@ -36,7 +36,7 @@ export const getXhr = url => new Promise((resolve, reject) => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`GET`, `http://101.101.167.71:32666${url}`)
+	xhr.open(`GET`, `https://open-tube-api.kro.kr:32666${url}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
@@ -50,19 +50,21 @@ export const getXhr = url => new Promise((resolve, reject) => {
 	xhr.send()
 })
 
-export const postXhr = (url, data) => new Promise(resolve => {
+export const postXhr = (url, data) => new Promise((resolve, reject) => {
 	const xhr = new XMLHttpRequest()
 
 	if(!xhr) {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`POST`, `http://101.101.167.71:32666${url}`)
+	xhr.open(`POST`, `https://open-tube-api.kro.kr:32666${url}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
 			if (xhr.status === 200 || xhr.status === 201) {
 				resolve(xhr.responseText)
+			} else {
+				reject(new Error(`500 server error`))
 			}
 		}
 	})
@@ -96,7 +98,7 @@ export const xhrCorsServer = path => new Promise(resolve => {
 		throw new Error(`xhr 호출 불가`)
 	}
 
-	xhr.open(`GET`, `https://cors-servers.herokuapp.com/${path}`)
+	xhr.open(`GET`, `https://cors-server-v01.herokuapp.com/${path}`)
 	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
 	xhr.addEventListener(`readystatechange`, () => {
 		if (xhr.readyState === xhr.DONE) {				
@@ -117,6 +119,14 @@ export const logout = actionCreator(state => {
 	}).catch(error => {
 		console.error(error)
 	})
+
+	return state
+})
+
+export const messageShow = actionCreator((state, meessage) => {
+	const modal = document.createElement(`modal-message`)
+	modal.message = meessage
+	document.body.appendChild(modal)
 
 	return state
 })
