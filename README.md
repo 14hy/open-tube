@@ -35,7 +35,7 @@
 
 ### AI
 
-1. `감성분석`은 RNN 중 Bi-LSTM 구조를 사용해 직접 학습하여 사용하였습니다. 데이터셋으로는 [NSMC](https://github.com/e9t/nsmc) 를 사용 하였습니다. 기존 [google-bert](https://github.com/google-research/bert)  언어 모델에 레이어를 추가하여 Fine-tuning 하려 하였으나, 주어진 클라우드 플랫폼에서 GPU 사용이 불가능하여 지나친 성능이슈가 존재하여 경량화하였습니다.
+1. `감성분석`은 RNN 중 Bidirectioanl LSTM 구조를 사용해 직접 학습하여 사용하였습니다. 데이터셋으로는 [NSMC](https://github.com/e9t/nsmc) 의 한국어 문장 데이터와 [Sentiment140](http://help.sentiment140.com/for-students) 의 영어 문장 데이터를 사용 하였습니다. 기존 [google-bert](https://github.com/google-research/bert)  언어 모델에 레이어를 추가하여 Fine-tuning 하려 하였으나, 주어진 클라우드 플랫폼에서 GPU 사용이 불가능하여 지나친 성능이슈가 존재하여 경량화하였습니다.
 2. `영상 얼굴 인식 모델`은 [face-detection-mobilenet-ssd](https://github.com/bruceyang2012/Face-detection-with-mobilenet-ssd)를 사용하였습니다. 마찬가지로 GPU사용이 불가능함으로써 최대한 가벼운 모델을 찾아 배포하기 알맞은 바이너리 포맷으로 변환-[notebook](https://nbviewer.jupyter.org/github/rhodochrosite/my-snippets/blob/master/2019_08/py2%26keras%20to%20saved_model.ipynb)한 후, 사용하였습니다.
 3. 인식한 얼굴을 구분하기 위한 `얼굴 유사도 모델`또한 바이너리 포맷으로 변환-[notebook](https://nbviewer.jupyter.org/github/rhodochrosite/my-snippets/blob/master/2019_08/tf1%20eager%26tf.keras%20to%20saved_model.ipynb)하여 사용하였습니다. 얼굴을 인식이후, cropping 하여 얼굴만 잘라낸 후, 영상내의 얼굴들을 구별하기 위해 사용합니다. 
 
