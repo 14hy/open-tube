@@ -273,5 +273,6 @@ module.exports = {
         "chrome": true,
         "firebase": true,
         "firebaseui": true,
+        "YT": true,
     }
 };

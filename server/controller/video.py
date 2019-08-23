@@ -3,6 +3,7 @@ from flask_restplus import Resource, Model, fields, reqparse, inputs, Namespace
 from src.thumbnail import *
 from src.reply_gif import *
 from multiprocessing import Process
+from app import db
 
 api_video = Namespace('video', description='댓글 태그 gif와 썸네일을 요청합니다.')
 
@@ -105,6 +106,7 @@ class Route(Resource):
                     v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
                 if v is None:
                     v = Video(vid=vid, uid=uid, status='wait')
+
                     db.session.add(v)
                     db.session.commit()
 
@@ -155,6 +157,7 @@ class Route(Resource):
             db.session.remove()
             db.session.rollback()
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+
         if v is None:
             return {
                 'status': 'failed',
@@ -194,10 +197,12 @@ class Route(Resource):
             db.session.remove()
             db.session.rollback()
             v: Video = Video.query.filter_by(vid=vid, uid=uid).first()
+
         if v is None:
             v = Video(vid=vid, uid=uid, status='wait', thumbnails_path={})
             db.session.add(v)
             db.session.commit()
+
         try:
             path = v.thumbnails_path[f'{height}{width}']
             return {
@@ -214,4 +219,5 @@ class Route(Resource):
                                                        "grid": (height, width)}).start()
             return {
                 'status': v.status
+
             }

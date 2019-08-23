@@ -29,6 +29,46 @@ export const loadXhr = actionCreator((state, url, callback) => {
 	return state
 })
 
+export const getXhr = url => new Promise((resolve, reject) => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`GET`, `http://101.101.167.71:32666${url}`)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			} else {
+				reject(new Error(`500 server error`))
+			}
+		} 
+	})
+	xhr.send()
+})
+
+export const postXhr = (url, data) => new Promise(resolve => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`POST`, `http://101.101.167.71:32666${url}`)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			}
+		}
+	})
+	xhr.send(data)
+})
+
 export const xhrFirebase = actionCreator((state, path, callback) => {
 	const xhr = new XMLHttpRequest()
 
@@ -49,8 +89,29 @@ export const xhrFirebase = actionCreator((state, path, callback) => {
 	return state
 })
 
+export const xhrCorsServer = path => new Promise(resolve => {
+	const xhr = new XMLHttpRequest()
+
+	if(!xhr) {
+		throw new Error(`xhr 호출 불가`)
+	}
+
+	xhr.open(`GET`, `https://cors-servers.herokuapp.com/${path}`)
+	xhr.setRequestHeader(`x-requested-with`, `XMLHttpRequest`)
+	xhr.addEventListener(`readystatechange`, () => {
+		if (xhr.readyState === xhr.DONE) {				
+			if (xhr.status === 200 || xhr.status === 201) {
+				resolve(xhr.responseText)
+			}
+		}
+	})
+	xhr.send()
+})
+
 export const logout = actionCreator(state => {
 	firebase.auth().signOut().then(() => {
+		state.isLogin = false
+		store.setState(state)
 		alert(`로그인이 필요합니다. 로그인 페이지로 이동`)
 		main.renderPage(`page-login`, `/`)
 	}).catch(error => {

@@ -5,7 +5,7 @@ import threading
 import cv2
 import numpy as np
 import tensorflow as tf
-from ssd_box_encode_decode_utils import decode_y2
+from .utils import decode_y2
 from pathlib import Path
 import json
 from multiprocessing import Process
@@ -88,7 +88,7 @@ def _get_anoymous_features(vid):
                         height = abs(ymax - ymin)
 
                         time_line[face_id].append({
-                            time: [xmin * 1280, ymax * 720, width * 1280, height * 720]
+                            time: [xmin * 1280 / 512, ymax * 720 / 512, width * 1280 / 512, height * 720 / 512]
                         })
                         found = True
                 if not found:
@@ -108,7 +108,7 @@ def _get_anoymous_features(vid):
                     height = abs(ymax - ymin)
 
                     time_line[unique_face_idx] = [{
-                        time: [xmin * 1280, ymax * 720, width * 1280, height * 720]
+                        time: [xmin * 1280 / 512, ymax * 720 / 512, width * 1280 / 512, height * 720 / 512]
                     }]
                     unique_face_idx += 1
 

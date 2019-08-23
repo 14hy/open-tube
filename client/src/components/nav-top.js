@@ -65,7 +65,7 @@ export class NavTop extends HTMLElement {
 	}
 
 	clickLogout(event) {
-		if (event.target.classList.contains(`login-btn-logout`)) {
+		if (event.target.classList.contains(`login-btn-logout`)) {			
 			logout()
 		}
 	}

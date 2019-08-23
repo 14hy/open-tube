@@ -11,9 +11,10 @@ test_data = [
 word2vec_path = "../model/word2vec/word2vec.model"
 slang_dict_path = "../model/slang/slang_dict.txt"
 sent = sentiment_analysis.SentimentAnalysis(word2vec_path, slang_dict_path)
-print(sent.score(test_data))
-print(sent.slang(test_data))
+index_list = [1, 2, 3, 4, 5]
+print(sent.score(index_list, test_data))
+print(sent.slang(index_list, test_data))
 ban_list = [
     "베충"
 ]
-print(sent.slang(test_data, ban_list))
+print(sent.slang(index_list, test_data, ban_list))
