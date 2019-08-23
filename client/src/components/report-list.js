@@ -49,9 +49,9 @@ export class ReportList extends HTMLElement {
 
 		if (!info) {
 			return html``
-		}		
+		}
 
-		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+		db.collection(`userId`).doc(info.uid).get().then(doc => {
 			if (doc.exists) {
 				this.renderLi(doc.data())
 			} else {
@@ -93,7 +93,7 @@ export class ReportList extends HTMLElement {
 		}
 
 		render(html`
-			${Object.values(db).map(i => li(i))}
+			${Object.values(db).map(_i => li(_i))}
 		`, ul)
 	}	
 

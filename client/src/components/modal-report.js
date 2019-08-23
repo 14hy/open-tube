@@ -116,8 +116,9 @@ export class ModalReport extends HTMLElement {
 	}
 
 	getYoutubeData(vid) {
+		const userInfo = store.getState().userInfo
 		const db = firebase.firestore()
-		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+		db.collection(`userId`).doc(userInfo.uid).get().then(doc => {
 			if (doc.exists) {
 				Object.values(doc.data()).forEach(each => {
 					if (each.vid === vid) {

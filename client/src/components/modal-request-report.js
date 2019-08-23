@@ -2,7 +2,7 @@ import { html, render } from 'lit-html'
 import i18next from 'i18next'
 
 import { xhrCorsServer, postXhr, messageShow } from '../libs/actions.js'
-// import store from '../libs/store.js'
+import store from '../libs/store.js'
 
 export class ModalRequestReport extends HTMLElement {
 	constructor() {
@@ -47,8 +47,7 @@ export class ModalRequestReport extends HTMLElement {
 	get clickSend() {
 		const root = this
 		return {
-			handleEvent() {
-				// const uid = store.getState().userInfo.uid
+			handleEvent() {				
 				const url = root.querySelector(`#inputYoutubeURL`).value				
 				
 				const formData = new FormData()
@@ -91,8 +90,9 @@ export class ModalRequestReport extends HTMLElement {
 	}
 
 	setDb(youtubeInfo) {
+		const uid = store.getState().userInfo.uid
 		const db = firebase.firestore()
-		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+		db.collection(`userId`).doc(uid).get().then(doc => {
 			if (doc.exists) {
 				const data = doc.data()
 				const length = Object.values(data).length        
@@ -121,7 +121,7 @@ export class ModalRequestReport extends HTMLElement {
 					return
 				}
 				
-				db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).update(obj).catch(err => {
+				db.collection(`userId`).doc(uid).update(obj).catch(err => {
 					console.error(`NO ACCESS DB ${err}`)
 				})
 				messageShow(`레포트 요청이 접수되었습니다.`)
