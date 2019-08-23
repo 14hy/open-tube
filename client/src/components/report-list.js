@@ -53,13 +53,14 @@ export class ReportList extends HTMLElement {
 
 	get li() {
 		const info = store.getState().userInfo
+		const uid = info.uid || `1InVr0t4PdTWHcomCZlcuJ0ZZB03`
 		const db = firebase.firestore()
 
 		if (!info) {
 			return html``
 		}
 
-		db.collection(`userId`).doc(info.uid).get().then(doc => {
+		db.collection(`userId`).doc(uid).get().then(doc => {
 			if (doc.exists) {
 				this.renderLi(doc.data())
 			} else {
@@ -80,14 +81,14 @@ export class ReportList extends HTMLElement {
 			getXhr(`/history/?userId=1InVr0t4PdTWHcomCZlcuJ0ZZB03&url=https://www.youtube.com/watch?v=${item.vid}`).then(res2 => {
 				const isComplete = () => statusName[JSON.parse(res2).status + 1] === `분석 완료`
 				const isProcessing = () => statusName[JSON.parse(res2).status + 1] === `분석 중`
-				render(html`${statusName[JSON.parse(res2).status + 1]}`, this.querySelectorAll(`.report-status`)[i])				
+				render(html`${statusName[JSON.parse(res2).status + 1]}`, this.querySelectorAll(`.report-status`)[i])
 				if (isComplete()) {
 					this.querySelectorAll(`.report-status`)[i].classList.add(`complete`)
 				} else if (isProcessing()) {
 					this.querySelectorAll(`.report-status`)[i].classList.add(`processing`)
 				}
 				i += 1
-			})			
+			})
 
 			const date = new Date(item.time.seconds * 1000).toLocaleDateString()
 			

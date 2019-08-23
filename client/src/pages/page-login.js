@@ -75,7 +75,7 @@ export class PageLogin extends HTMLElement {
 		return html`
 		<div id="pageLogin">
 			<div class="div-info">
-				<span>그림으로 된 설명</span>
+				<!-- <span>그림으로 된 설명</span> -->
 			</div>
 			<div class="div-login">
 				<span class="login-box">
