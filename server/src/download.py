@@ -88,7 +88,7 @@ def _get_anoymous_features(vid):
                         height = abs(ymax - ymin)
 
                         time_line[face_id].append({
-                            time: [xmin * 1280 / 512, ymax * 720 / 512, width * 1280 / 512, height * 720 / 512]
+                            time: [xmin / 512, ymin / 512, width / 512, height / 512]
                         })
                         found = True
                 if not found:
@@ -108,7 +108,7 @@ def _get_anoymous_features(vid):
                     height = abs(ymax - ymin)
 
                     time_line[unique_face_idx] = [{
-                        time: [xmin * 1280 / 512, ymax * 720 / 512, width * 1280 / 512, height * 720 / 512]
+                        time: [xmin / 512, ymin / 512, width / 512, height / 512]
                     }]
                     unique_face_idx += 1
 
