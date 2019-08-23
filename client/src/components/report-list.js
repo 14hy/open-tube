@@ -1,6 +1,5 @@
 import { html, render } from 'lit-html'
 
-import { xhrFirebase } from '../libs/actions.js'
 import { main } from '../main.js'
 import store from '../libs/store.js'
 
@@ -45,24 +44,29 @@ export class ReportList extends HTMLElement {
 
 	get li() {
 		const info = store.getState().userInfo
+		const db = firebase.firestore()
+
 		if (!info) {
 			return html``
-		}
-		xhrFirebase(`/${info.uid}/reportList`, db => {
-			if (!db) {
-				return
+		}		
+
+		db.collection(`userId`).doc(`1InVr0t4PdTWHcomCZlcuJ0ZZB03`).get().then(doc => {
+			if (doc.exists) {
+				this.renderLi(doc.data())
+			} else {
+				console.error(`No SEACH DB`)
 			}
-			this.renderLi(db)
+		}).catch(err => {
+			console.error(`NO ACCESS DB ${err}`)
 		})
 
 		return html``
 	}
 
 	renderLi(db) {
-		const _db = JSON.parse(db)
 		const ul = this.querySelector(`.ul-reports`)
-		const li = item => {
-			const date = new Date(item.time._seconds * 1000).toLocaleDateString()
+		const li = item => {			
+			const date = new Date(item.time.seconds * 1000).toLocaleDateString()
 			const statusName = [`요청 전`, `대기 중`, `분석 중`, `분석 완료`]
 			const status = statusName[item.status]
 			return html`
@@ -77,7 +81,7 @@ export class ReportList extends HTMLElement {
 
 		ul.innerHTML = ``
 		render(html`
-			${Object.values(_db).map(i => li(i))}
+			${Object.values(db).map(i => li(i))}
 		`, ul)
 	}
 

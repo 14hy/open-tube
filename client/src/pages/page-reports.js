@@ -6,6 +6,7 @@ import '../components/report-list.js'
 import '../components/app-footer.js'
 import '../components/modal-request-report.js'
 import '../components/modal-report.js'
+import '../components/modal-message.js'
 
 export class PageReports extends HTMLElement {
 	constructor() {

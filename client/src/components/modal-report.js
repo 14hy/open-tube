@@ -36,7 +36,7 @@ export class ModalReport extends HTMLElement {
 				videoId: `M7lc1UVf-V`,
 				events: {
 					/* 'onReady': this.onPlayerReady, */
-					/* 'onStateChange': this.onPlayerStateChange.bind(this), */
+					'onStateChange': this.onPlayerStateChange.bind(this),
 				},
 				playerVars: {
 					fs: 0,
@@ -56,8 +56,7 @@ export class ModalReport extends HTMLElement {
 
 	onPlayerStateChange(event) {
 		if (event.data == YT.PlayerState.PLAYING && !this.done) {
-			setTimeout(this.stopVideo, 1000)
-			this.done = true
+			render(``, this.querySelector(`.sensor-box-wrap`))
 		}
 	}
 
@@ -77,7 +76,8 @@ export class ModalReport extends HTMLElement {
 
 		this.url = url
 		this.style.transform = `scale(1)`
-		this.getYoutubeData(vid)
+		// this.getYoutubeData(vid)
+		this.getFaceData(vid)
 		window.player.loadVideoById(vid)
 		window.setTimeout(() => window.player.pauseVideo(), 2000)
 
@@ -123,10 +123,24 @@ export class ModalReport extends HTMLElement {
 		this.viewCount = text.match(/"viewCountText":{"simpleText":"조회수 (.*?)"}/)[1]
 		this.date = text.match(/"dateText":{"simpleText":"게시일: (.*?)"}/)[1]
 		this.desc = text.match(/"description":{"runs":\[{"text":"(.*?)"}/)[1]
-		this.likeCount = text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1]
-		this.getFaceData()
+		this.likeCount = text.match(/"accessibilityData":{"label":"좋아요 (.*?)"}/)[1]		
 		
 		render(this.render(), this)			
+	}
+
+	sensorBox(obj) {
+		return html`
+		<span 
+			class="sensor-box"
+			style="
+			top: calc(${obj.bottom} * 100%);
+			left: calc(${obj.left} * 100%);
+			width: calc(${obj.width} * 100%);
+			height: calc(${obj.height} * 100%);
+			border: 3px solid ${obj.color};
+			"
+			></span>
+		`
 	}
 
 	get videoBox() {
@@ -137,7 +151,7 @@ export class ModalReport extends HTMLElement {
 			<div class="player-wrap">
 				<div id="player"></div>
 				<i class="fi-arrows-out size-72 player-full-screen" @click=${this.clickFullScreen}></i>
-				<span class="sensor-box"></span>
+				<span class="sensor-box-wrap"></span>
 			</div>			
 			<h2 class="video-desc">Information</h2>
 			<div class="video-desc">
@@ -164,11 +178,11 @@ export class ModalReport extends HTMLElement {
 		`
 	}
 
-	async getFaceData() {
+	async getFaceData(vid) {
 		const uid = store.getState().userInfo.uid
 		const formData = new FormData()
 		formData.append(`uid`, uid)
-		formData.append(`vid`, this.vid)		
+		formData.append(`vid`, vid)
 
 		try {
 			const res = await postXhr(`/download/`, formData)
@@ -194,7 +208,7 @@ export class ModalReport extends HTMLElement {
 						@mouseleave=${this.mouseleaveFaceImg}
 						class="face-img" 
 						style="border: 5px solid ${randomcolor({luminosity: `dark`})}" 
-						src="https://open-tube.kro.kr/img-face/${uid}/${this.vid}/${index}.jpg"/>
+						src="https://open-tube.kro.kr/img-face/${uid}/${vid}/${index}.jpg"/>
 					`)}
 				`, this.querySelector(`.face-content`))
 			}
@@ -297,12 +311,21 @@ export class ModalReport extends HTMLElement {
 	}
 
 	get clickSeconds() {
+		const root = this
 		return {
 			handleEvent(event) {
 				const time = event.target.textContent
-
-				window.player.seekTo(time)
+				const desc = event.target.closest(`.time-desc`)
+				window.player.seekTo(time - 1)
 				window.player.pauseVideo()
+
+				render(root.sensorBox({
+					left: desc.querySelector(`.x-value`).textContent,
+					bottom: desc.querySelector(`.y-value`).textContent,
+					width: desc.querySelector(`.width-value`).textContent,
+					height: desc.querySelector(`.height-value`).textContent,
+					color: randomcolor({luminosity: `dark`}),
+				}), root.querySelector(`.sensor-box-wrap`))
 			},
 			capture: true,
 		}
@@ -312,10 +335,10 @@ export class ModalReport extends HTMLElement {
 		return html`
 		<div class="time-desc">
 			<div class="desc-seconds"><h5>Seconds</h5><span class="second-detail" @click=${this.clickSeconds}>${obj.seconds}</span></div>
-			<div class="desc-x"><h5>X: </h5>${obj.x}</div>
-			<div class="desc-y"><h5>Y: </h5>${obj.y}</div>
-			<div class="desc-width"><h5>Width: </h5>${obj.width}</div>
-			<div class="desc-height"><h5>Height: </h5>${obj.height}</div>
+			<div class="desc-x"><h5>X: </h5> <span class="x-value">${obj.x}</span></div>
+			<div class="desc-y"><h5>Y: </h5> <span class="y-value">${obj.y}</span></div>
+			<div class="desc-width"><h5>Width: </h5> <span class="width-value">${obj.width}</span></div>
+			<div class="desc-height"><h5>Height: </h5> <span class="height-value">${obj.height}</span></div>
 		</div>
 		`
 	}

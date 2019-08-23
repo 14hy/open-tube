@@ -120,6 +120,11 @@ modal-report {
                     background-color: black;                    
                 }
 
+                .sensor-box {
+                    position: absolute;
+                    z-index: 1000000;
+                }
+
                 .player-wrap {
                     position: relative;
 
@@ -245,7 +250,7 @@ modal-report {
                         margin: 10px;
 
                         &.active {
-                            filter: brightness(1.4);
+                            // filter: brightness(1.4);
                         }
                     }
                 }
